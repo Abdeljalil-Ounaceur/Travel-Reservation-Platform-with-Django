@@ -1,0 +1,520 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tourly - Travel Agency</title>
+
+    <link rel="shortcut icon" href="{% static 'images/favicon.svg' %}" type="image/svg+xml">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet">
+</head>
+
+<body id="top">
+
+  {%  include "pages/navbar.html"  %}
+
+    <main>
+        <main>
+            <article>
+        
+              <section class="hero" id="home">
+                <div class="container">
+        
+                  <h2 class="h1 hero-title">Journey to explore world</h2>
+        
+                  <p class="hero-text">
+                    Ac mi duis mollis. Sapiente? Scelerisque quae, penatibus? Suscipit class corporis nostra rem quos
+                    voluptatibus habitant?
+                    Fames, vivamus minim nemo enim, gravida lobortis quasi, eum.
+                  </p>
+        
+                  <div class="btn-group">
+                    <a href="{% url 'about_us_page' %}" class="btn btn-primary" style="text-decoration: none; color: white;">
+                      Learn more
+                    </a>
+        
+                    <button class="btn btn-secondary" onclick="scrollToSection()">Book now</button>
+                  </div>
+        
+                </div>
+              </section>
+        
+              <section class="tour-search" id="tour-search-section">
+                <div class="container">
+        
+                  <form action="" class="tour-search-form" onsubmit="return validateForm()">
+                    <div class="input-wrapper">
+                        <label for="depart" class="input-label">Départ</label>
+                        <input type="text" name="depart" id="depart" required placeholder="Enter Depart" class="input-field">
+                    </div>
+                
+                    <div class="input-wrapper">
+                        <label for="destination" class="input-label">Destination</label>
+                        <input type="text" name="destination" id="destination" required placeholder="Enter Destination" class="input-field">
+                    </div>
+                
+                    <div class="input-wrapper">
+                        <label for="checkin" class="input-label">Date De Départ</label>
+                        <input type="date" name="checkin" id="checkin" required class="input-field">
+                    </div>
+                
+                    <div class="input-wrapper">
+                        <label for="checkout" class="input-label">Date De Retour</label>
+                        <input type="date" name="checkout" id="checkout" required class="input-field">
+                    </div>
+                
+                    <button type="submit" class="btn btn-secondary">Cherche</button>
+                </form>
+        
+                </div>
+              </section>
+        
+              <section class="popular" id="destination">
+                <div class="container">
+        
+                  <h2 class="h2 section-title">Checkout Our Packeges</h2>
+        
+                  <p class="section-text">
+                    Fusce hic augue velit wisi quibusdam pariatur, iusto primis, nec nemo, rutrum. Vestibulum cumque laudantium.
+                    Sit ornare
+                    mollitia tenetur, aptent.
+                  </p>
+        
+                  <ul class="popular-list">
+        
+                    <li>
+                      <div class="popular-card">
+        
+                        <figure class="card-img">
+                          <img src="{% static 'images/category1.png'%}" alt="San miguel, italy" loading="lazy">
+                        </figure>
+        
+                        <div class="card-content">
+        
+                          <div class="card-rating">
+                            <ion-icon name="star"></ion-icon>
+                            <ion-icon name="star"></ion-icon>
+                            <ion-icon name="star"></ion-icon>
+                            <ion-icon name="star"></ion-icon>
+                            <ion-icon name="star"></ion-icon>
+                          </div>
+        
+                          <p class="card-subtitle">
+                            <a href="#">Italy</a>
+                          </p>
+        
+                          <h3 class="h3 card-title">
+                            <a href="#">San miguel</a>
+                          </h3>
+        
+                          <p class="card-text">
+                            Fusce hic augue velit wisi ips quibusdam pariatur, iusto.
+                          </p>
+        
+                        </div>
+        
+                      </div>
+                    </li>
+        
+                    <li>
+                      <div class="popular-card">
+        
+                        <figure class="card-img">
+                          <img src="{% static 'images/category2.png'%}" alt="Burj khalifa, dubai" loading="lazy">
+                        </figure>
+        
+                        <div class="card-content">
+        
+                          <div class="card-rating">
+                            <ion-icon name="star"></ion-icon>
+                            <ion-icon name="star"></ion-icon>
+                            <ion-icon name="star"></ion-icon>
+                            <ion-icon name="star"></ion-icon>
+                            <ion-icon name="star"></ion-icon>
+                          </div>
+        
+                          <p class="card-subtitle">
+                            <a href="#">Dubai</a>
+                          </p>
+        
+                          <h3 class="h3 card-title">
+                            <a href="#">Burj khalifa</a>
+                          </h3>
+        
+                          <p class="card-text">
+                            Fusce hic augue velit wisi ips quibusdam pariatur, iusto.
+                          </p>
+        
+                        </div>
+        
+                      </div>
+                    </li>
+        
+                    <li>
+                      <div class="popular-card">
+        
+                        <figure class="card-img">
+                          <img src="{% static 'images/category3.png'%}" alt="Kyoto temple, japan" loading="lazy">
+                        </figure>
+        
+                        <div class="card-content">
+        
+                          <div class="card-rating">
+                            <ion-icon name="star"></ion-icon>
+                            <ion-icon name="star"></ion-icon>
+                            <ion-icon name="star"></ion-icon>
+                            <ion-icon name="star"></ion-icon>
+                            <ion-icon name="star"></ion-icon>
+                          </div>
+        
+                          <p class="card-subtitle">
+                            <a href="#">Japan</a>
+                          </p>
+        
+                          <h3 class="h3 card-title">
+                            <a href="#">Kyoto temple</a>
+                          </h3>
+        
+                          <p class="card-text">
+                            Fusce hic augue velit wisi ips quibusdam pariatur, iusto.
+                          </p>
+        
+                        </div>
+        
+                      </div>
+                    </li>
+        
+                  </ul>
+                  <div class="btn-group">
+                    <a href="{% url 'package_page' %}" class="btn btn-primary" style="text-decoration: none; color: white;">
+                      More Packeges
+                    </a>
+                  </div>
+        
+                </div>
+              </section>
+        
+              <section class="package" id="package">
+                <div class="container">
+        
+                  <p class="section-subtitle">Popular Offers</p>
+        
+                  <h2 class="h2 section-title">Checkout Our Offers</h2>
+        
+                  <p class="section-text">
+                    Fusce hic augue velit wisi quibusdam pariatur, iusto primis, nec nemo, rutrum. Vestibulum cumque laudantium.
+                    Sit ornare
+                    mollitia tenetur, aptent.
+                  </p>
+        
+                  <ul class="package-list">
+        
+                    <li>
+                      <div class="package-card">
+        
+                        <figure class="card-banner">
+                          <img src="{% static 'images/packege-1.jpg'%}" alt="Experience The Great Holiday On Beach" loading="lazy">
+                        </figure>
+        
+                        <div class="card-content">
+        
+                          <h3 class="h3 card-title">Experience The Great Holiday On Beach</h3>
+        
+                          <p class="card-text">
+                            Laoreet, voluptatum nihil dolor esse quaerat mattis explicabo maiores, est aliquet porttitor! Eaque,
+                            cras, aspernatur.
+                          </p>
+        
+                          <ul class="card-meta-list">
+        
+                            <li class="card-meta-item">
+                              <div class="meta-box">
+                                <ion-icon name="time"></ion-icon>
+        
+                                <p class="text">7D/6N</p>
+                              </div>
+                            </li>
+        
+                            <li class="card-meta-item">
+                              <div class="meta-box">
+                                <ion-icon name="people"></ion-icon>
+        
+                                <p class="text">pax: 10</p>
+                              </div>
+                            </li>
+        
+                            <li class="card-meta-item">
+                              <div class="meta-box">
+                                <ion-icon name="location"></ion-icon>
+        
+                                <p class="text">Malaysia</p>
+                              </div>
+                            </li>
+        
+                          </ul>
+        
+                        </div>
+        
+                        <div class="card-price">
+        
+                          <div class="wrapper">
+        
+                            <p class="reviews">(25 reviews)</p>
+        
+                            <div class="card-rating">
+                              <ion-icon name="star"></ion-icon>
+                              <ion-icon name="star"></ion-icon>
+                              <ion-icon name="star"></ion-icon>
+                              <ion-icon name="star"></ion-icon>
+                              <ion-icon name="star"></ion-icon>
+                            </div>
+        
+                          </div>
+        
+                          <p class="price">
+                            $750
+                            <span>/ per person</span>
+                          </p>
+        
+                          <button class="btn btn-secondary">Book Now</button>
+        
+                        </div>
+        
+                      </div>
+                    </li>
+        
+                    <li>
+                      <div class="package-card">
+        
+                        <figure class="card-banner">
+                          <img src="{% static 'images/packege-2.jpg'%}" alt="Summer Holiday To The Oxolotan River" loading="lazy">
+                        </figure>
+        
+                        <div class="card-content">
+        
+                          <h3 class="h3 card-title">Summer Holiday To The Oxolotan River</h3>
+        
+                          <p class="card-text">
+                            Laoreet, voluptatum nihil dolor esse quaerat mattis explicabo maiores, est aliquet porttitor! Eaque,
+                            cras, aspernatur.
+                          </p>
+        
+                          <ul class="card-meta-list">
+        
+                            <li class="card-meta-item">
+                              <div class="meta-box">
+                                <ion-icon name="time"></ion-icon>
+        
+                                <p class="text">7D/6N</p>
+                              </div>
+                            </li>
+        
+                            <li class="card-meta-item">
+                              <div class="meta-box">
+                                <ion-icon name="people"></ion-icon>
+        
+                                <p class="text">pax: 10</p>
+                              </div>
+                            </li>
+        
+                            <li class="card-meta-item">
+                              <div class="meta-box">
+                                <ion-icon name="location"></ion-icon>
+        
+                                <p class="text">Malaysia</p>
+                              </div>
+                            </li>
+        
+                          </ul>
+        
+                        </div>
+        
+                        <div class="card-price">
+        
+                          <div class="wrapper">
+        
+                            <p class="reviews">(20 reviews)</p>
+        
+                            <div class="card-rating">
+                              <ion-icon name="star"></ion-icon>
+                              <ion-icon name="star"></ion-icon>
+                              <ion-icon name="star"></ion-icon>
+                              <ion-icon name="star"></ion-icon>
+                              <ion-icon name="star"></ion-icon>
+                            </div>
+        
+                          </div>
+        
+                          <p class="price">
+                            $520
+                            <span>/ per person</span>
+                          </p>
+        
+                          <button class="btn btn-secondary">Book Now</button>
+        
+                        </div>
+        
+                      </div>
+                    </li>
+        
+                    <li>
+                      <div class="package-card">
+        
+                        <figure class="card-banner">
+                          <img src="{% static 'images/packege-3.jpg'%}" alt="Santorini Island's Weekend Vacation" loading="lazy">
+                        </figure>
+        
+                        <div class="card-content">
+        
+                          <h3 class="h3 card-title">Santorini Island's Weekend Vacation</h3>
+        
+                          <p class="card-text">
+                            Laoreet, voluptatum nihil dolor esse quaerat mattis explicabo maiores, est aliquet porttitor! Eaque,
+                            cras, aspernatur.
+                          </p>
+        
+                          <ul class="card-meta-list">
+        
+                            <li class="card-meta-item">
+                              <div class="meta-box">
+                                <ion-icon name="time"></ion-icon>
+        
+                                <p class="text">7D/6N</p>
+                              </div>
+                            </li>
+        
+                            <li class="card-meta-item">
+                              <div class="meta-box">
+                                <ion-icon name="people"></ion-icon>
+        
+                                <p class="text">pax: 10</p>
+                              </div>
+                            </li>
+        
+                            <li class="card-meta-item">
+                              <div class="meta-box">
+                                <ion-icon name="location"></ion-icon>
+        
+                                <p class="text">Malaysia</p>
+                              </div>
+                            </li>
+        
+                          </ul>
+        
+                        </div>
+        
+                        <div class="card-price">
+        
+                          <div class="wrapper">
+        
+                            <p class="reviews">(40 reviews)</p>
+        
+                            <div class="card-rating">
+                              <ion-icon name="star"></ion-icon>
+                              <ion-icon name="star"></ion-icon>
+                              <ion-icon name="star"></ion-icon>
+                              <ion-icon name="star"></ion-icon>
+                              <ion-icon name="star"></ion-icon>
+                            </div>
+        
+                          </div>
+        
+                          <p class="price">
+                            $660
+                            <span>/ per person</span>
+                          </p>
+        
+                          <button class="btn btn-secondary">Book Now</button>
+        
+                        </div>
+        
+                      </div>
+                    </li>
+        
+                  </ul>
+        
+                  <button class="btn btn-primary">View All Offers</button>
+        
+                </div>
+              </section>     
+        
+              <section class="cta" id="contact">
+                <div class="container">
+        
+                  <div class="cta-content">
+                    <p class="section-subtitle">Call To Action</p>
+        
+                    <h2 class="h2 section-title">Ready For Unforgatable Travel. Remember Us!</h2>
+        
+                    <p class="section-text">
+                      Fusce hic augue velit wisi quibusdam pariatur, iusto primis, nec nemo, rutrum. Vestibulum cumque
+                      laudantium. Sit ornare
+                      mollitia tenetur, aptent.
+                    </p>
+                  </div>
+                  <a href="{% url 'contact_us_page' %}" class="btn btn-secondary" style="text-decoration: none; color: white;">
+                    Contact Us !
+                  </a>
+        
+                </div>
+              </section>
+        
+            </article>
+        </main>
+        
+        {%  include "pages/footer.html"  %}
+        
+    </main>
+    
+</body>
+</html>
+
+
+<script>
+  function scrollToSection() {
+    var section = document.getElementById('tour-search-section');
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+  document.addEventListener("DOMContentLoaded", function() {
+    const dateDepartInput = document.getElementById("checkin");
+    const dateRetourInput = document.getElementById("checkout");
+
+    // Ajouter un écouteur d'événements à la date de départ
+    dateDepartInput.addEventListener("input", function() {
+      // Récupérer la date de départ sélectionnée
+      const dateDepart = new Date(dateDepartInput.value);
+
+      // Vérifier si la date de départ est dans le passé
+      const aujourdHui = new Date();
+      if (dateDepart < aujourdHui) {
+        // Si la date de départ est dans le passé, réinitialiser à la date d'aujourd'hui
+        dateDepartInput.value = aujourdHui.toISOString().split('T')[0];
+      }
+
+      // Définir la date de retour minimale comme Date De Départ + 1 jour
+      const dateRetourMin = new Date(dateDepart);
+      dateRetourMin.setDate(dateRetourMin.getDate() + 1);
+
+      // Formater la date minimale pour l'input de date
+      const jour = String(dateRetourMin.getDate()).padStart(2, '0');
+      const mois = String(dateRetourMin.getMonth() + 1).padStart(2, '0');
+      const annee = dateRetourMin.getFullYear();
+      const dateRetourMinFormatted = `${annee}-${mois}-${jour}`;
+
+      // Appliquer la date minimale à l'input de date de retour
+      dateRetourInput.min = dateRetourMinFormatted;
+    });
+  });
+</script>
+
+
+
