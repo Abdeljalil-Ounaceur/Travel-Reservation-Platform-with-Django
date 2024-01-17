@@ -7,4 +7,5 @@ urlpatterns = [
     path('about-us',views.about_us_page, name="about_us_page"),
     path('package',views.package_page, name='package_page'),
     path('offers',views.offers_page, name='offers_page'),
+    path('login_verification',views.login_verification, name='login_verification'),
 ]

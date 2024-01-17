@@ -39,7 +39,8 @@
                       </div>
                     </div>
                     
-                    <form action="{% url 'login'%}" name="login" id="loginForm">
+                    <form action="{% url 'login_verification'%}" name="login" id="loginForm" method="POST">
+                      {% csrf_token %}
                       <div class="row gy-3 overflow-hidden">
                         <div class="col-12">
                           <div class="form-floating mb-3">

@@ -25,5 +25,4 @@ def offers_page(request) :
 def settings_page(request) :
     return render(request,'admindashboard/settings.html')
 
-
 # Create your views here.

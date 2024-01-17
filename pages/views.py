@@ -1,5 +1,6 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import redirect, render
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth import authenticate, login
 
 def accuile_page(request) :
     return render(request,'pages/index.html')
@@ -15,6 +16,26 @@ def package_page(request) :
     return render(request,'pages/Package.html')
 def offers_page(request) :
     return render(request,'pages/Offers.html')
+
+def login_verification(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        print(email)
+        print(password)
+        user = authenticate(request, email=email, password=password)
+        if user is not None:
+            print("user exists")
+            login(request, user)
+            # Redirect to a success page.
+            return HttpResponseRedirect('clientdashboard')
+        else:
+            # Return an 'invalid login' error message.
+            print("user not exists")
+            return render(request, "pages/LoginSingUp.html", {"error": "Invalid login"})
+    else:
+        print("not post")
+        return render(request, "pages/LoginSingUp.html")
 
 
 # Create your views here.
