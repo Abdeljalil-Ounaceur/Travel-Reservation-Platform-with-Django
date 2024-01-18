@@ -35,7 +35,8 @@ def newoffer_page(request) :
 def offers_page(request) :
     offers = Offre.objects.all()
     categories = Categorie.objects.all()
-    return render(request,'admindashboard/offers.html', {'offers': offers, 'categories': categories})
+    promotions = Promotion.objects.all()
+    return render(request,'admindashboard/offers.html', {'offers': offers, 'categories': categories, 'promotions': promotions})
 
 def promotion_page(request) :
     promotions = Promotion.objects.all()

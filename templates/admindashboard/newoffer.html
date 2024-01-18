@@ -72,6 +72,15 @@
                                     </select>
                             </div>
                             <div class="form-group">
+                              <label for="exampleTextarea1">Promotion</label>
+                              <select class="form-control" name="promotion">
+                                <option value="">No Promotion</option>
+                                {% for promotion in promotions %}
+                                <option value="{{ promotion.id }}">{{ promotion.nom }} : {{promotion.remise}}%</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="exampleInputConfirmPassword1">Date Of start</label>
                                 <input type="date" class="form-control" placeholder="dd/mm/yyyy" name="date_debut" />
                             </div>

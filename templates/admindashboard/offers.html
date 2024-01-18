@@ -60,46 +60,45 @@
                             <th> Category </th>
                             <th> Start Date </th>
                             <th> Return Date </th>
+                            <th> Promotion </th>
                             <th> Action </th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                                {% for offer in offers %}
-                                  <tr>
-                                    <td>{{ offer.id }}</td>
-                                    <td>{{ offer.titre }}</td>
-                                    <td>{{ offer.prix }}</td>
-                                    <td>{{ offer.categorie.nom }}</td>
-                                    <td>{{ offer.date_debut|date:"d M Y" }}</td>
-                                    <td>{{ offer.date_fin|date:"d M Y" }}</td>
-                                    <td class="d-flex">
-                                      <a class="nav-link" data-toggle="modal" href="#editOfferModal{{offer.id}}" aria-expanded="false" aria-controls="ui-basic" style="margin-right: 0; padding-right: 0;">
-                                        <div class="badge badge-outline-success">
-                                          <span class="menu-icon">
-                                            <i class="mdi mdi-grease-pencil"></i>
-                                          </span>
-                                        </div>
-                                      </a>
-                                      <a class="nav-link" data-toggle="modal" href="#deleteOfferModal{{offer.id}}" aria-expanded="false" aria-controls="ui-basic" style="margin-right: 0; padding-right: 0; padding-left :6%;">
-                                        <div class="badge badge-outline-danger">
-                                          <span class="menu-icon">
-                                            <i class="mdi mdi-delete"></i>
-                                          </span>
-                                        </div>
-                                      </a>
-                                    </td>
-                                  </tr>
-                                {% endfor %}
+                            {% for offer in offers %}
+                            <tr>
+                              <td>{{ offer.id }}</td>
+                              <td>{{ offer.titre }}</td>
+                              <td>{{ offer.prix }}</td>
+                              <td>{{ offer.categorie.nom }}</td>
+                              <td>{{ offer.date_debut|date:"d M Y" }}</td>
+                              <td>{{ offer.date_fin|date:"d M Y" }}</td>
+                              <td>{{ offer.promotion.remise }}</td>
+                              <td class="d-flex">
+                                <a class="nav-link" data-toggle="modal" href="#editOfferModal{{offer.id}}" aria-expanded="false" aria-controls="ui-basic" style="margin-right: 0; padding-right: 0;">
+                                  <div class="badge badge-outline-success">
+                                    <span class="menu-icon">
+                                      <i class="mdi mdi-grease-pencil"></i>
+                                    </span>
+                                  </div>
+                                </a>
+                                <a class="nav-link" data-toggle="modal" href="#deleteOfferModal{{offer.id}}" aria-expanded="false" aria-controls="ui-basic" style="margin-right: 0; padding-right: 0; padding-left :6%;">
+                                  <div class="badge badge-outline-danger">
+                                    <span class="menu-icon">
+                                      <i class="mdi mdi-delete"></i>
+                                    </span>
+                                  </div>
+                                </a>
+                              </td>
+                            </tr>
+                            {% endfor %}
                         </tbody>
                       </table>
-                    </div>
-                  </div>
-                </div>
-                
-              </div>
-              
-            </div>
+                      </div>
+                      </div>
+                      </div>
+                      </div>
             {% for offer in offers %}
             <div id="editOfferModal{{offer.id}}" class="modal fade" >
               <div class="modal-dialog">
@@ -135,6 +134,15 @@
                             {% for category in categories %}
                                 <option value="{{ category.id }}" {% if offer.categorie.id == category.id %} selected {% endif %}>{{ category.nom }}</option>
                               {% endfor %}
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleTextarea1">Promotion</label>
+                          <select class="form-control" name="promotion">
+                            <option value="" {% if not offer.promotion %} selected {% endif %}>No Promotion</option>
+                            {% for promotion in promotions %}
+                                <option value="{{ promotion.id }}" {% if offer.promotion.id == promotion.id %} selected {% endif %}>{{ promotion.remise }}% [{{promotion.nom}}]</option>
+                            {% endfor %}
                           </select>
                         </div>
                         <div class="form-group">
