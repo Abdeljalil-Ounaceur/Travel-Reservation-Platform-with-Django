@@ -19,4 +19,8 @@ urlpatterns = [
     path('delete_category/<int:category_id>/', views.delete_category, name='delete_category'),
     path('edit_category/<int:category_id>/', views.edit_category, name='edit_category'),
 
+    path('create_offer', views.create_offer, name="create_offer"),
+    path('delete_offer/<int:offer_id>/', views.delete_offer, name='delete_offer'),
+    path('edit_offer/<int:offer_id>/', views.edit_offer, name='edit_offer'),
+
 ]

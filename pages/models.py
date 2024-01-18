@@ -47,7 +47,9 @@ class Offre(models.Model):
     titre = models.CharField(max_length=200)
     description = models.TextField()
     prix = models.DecimalField(max_digits=6, decimal_places=2)
-    duree = models.DurationField()
+    image = models.ImageField(upload_to='images/', null=True)
+    date_debut = models.DateTimeField()
+    date_fin = models.DateTimeField()
     categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
     promotion = models.ForeignKey(Promotion, on_delete=models.SET_NULL, null=True)
 

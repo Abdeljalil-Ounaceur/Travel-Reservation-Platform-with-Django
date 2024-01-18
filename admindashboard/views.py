@@ -4,7 +4,7 @@ from django.contrib.auth import login
 from pages.models import CustomUser
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import get_object_or_404, redirect
-from pages.models import Categorie
+from pages.models import Categorie, Offre, Categorie, Promotion
 
 
 def accuile_page(request) :
@@ -28,10 +28,14 @@ def newcategory_page(request) :
     return render(request,'admindashboard/newcategory.html')
 
 def newoffer_page(request) :
-    return render(request,'admindashboard/newoffer.html')
+    categories = Categorie.objects.all()
+    promotions = Promotion.objects.all()
+    return render(request,'admindashboard/newoffer.html', {'categories': categories, 'promotions': promotions})
 
 def offers_page(request) :
-    return render(request,'admindashboard/offers.html')
+    offers = Offre.objects.all()
+    categories = Categorie.objects.all()
+    return render(request,'admindashboard/offers.html', {'offers': offers, 'categories': categories})
 
 def settings_page(request) :
     return render(request,'admindashboard/settings.html')
@@ -117,4 +121,61 @@ def delete_category(request, category_id):
     category.delete()
     return redirect('category')
 
+
+def create_offer(request):
+    if request.method == 'POST':
+        titre = request.POST.get('titre')
+        description = request.POST.get('description')
+        prix = request.POST.get('prix')
+        image = request.FILES.get('image')
+        date_debut = request.POST.get('date_debut')
+        date_fin = request.POST.get('date_fin')
+        categorie_id = request.POST.get('categorie')
+        promotion_id = request.POST.get('promotion')
+        categorie = Categorie.objects.get(id=categorie_id)
+        promotion = Promotion.objects.get(id=promotion_id) if promotion_id else None
+        offre = Offre.objects.create(
+            titre=titre,
+            description=description,
+            prix=prix,
+            image=image,
+            date_debut=date_debut,
+            date_fin=date_fin,
+            categorie=categorie,
+            promotion=promotion,
+        )
+        return HttpResponseRedirect('offers')
+    else:
+        return redirect('newoffer')
+
+def edit_offer(request, offer_id):
+    offre = get_object_or_404(Offre, id=offer_id)
+    if request.method == 'POST':
+        titre = request.POST.get('titre')
+        description = request.POST.get('description')
+        prix = request.POST.get('prix')
+        image = request.FILES.get('image')
+        date_debut = request.POST.get('date_debut')
+        date_fin = request.POST.get('date_fin')
+        categorie_id = request.POST.get('categorie')
+        promotion_id = request.POST.get('promotion')
+        categorie = Categorie.objects.get(id=categorie_id)
+        promotion = Promotion.objects.get(id=promotion_id) if promotion_id else None
+        offre.titre = titre
+        offre.description = description
+        offre.prix = prix
+        offre.image = image
+        offre.date_debut = date_debut
+        offre.date_fin = date_fin
+        offre.categorie = categorie
+        offre.promotion = promotion
+        offre.save()
+        return redirect('offers')
+    else:
+        return redirect('offers')
+
+def delete_offer(request, offer_id):
+    offre = get_object_or_404(Offre, id=offer_id)
+    offre.delete()
+    return redirect('offers')
 # Create your views here.
