@@ -55,6 +55,19 @@
                           </div>
                         </div>
                         <div class="col-12">
+                            {% comment %} {% if msg %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{ msg }}
+                                </div>
+                            {% endif %} {% endcomment %}
+                            
+                            {%for msg in messages%}
+                            <div class="alert alert-danger" role="alert">
+                              {{ msg }}
+                          </div>
+                          {%endfor%}
+                        </div>
+                        <div class="col-12">
                         </div>
                         <div class="col-12">
                           <div class="d-grid">
@@ -63,7 +76,7 @@
                         </div>
                       </div>
                     </form>
-                    <form action="{% url 'signup_validation' %}" name="sign up" id="signupForm" style="display: none;" method="POST">
+                    <form action="{% url 'signup_validation1' %}" name="sign up" id="signupForm" style="display: none;" method="POST">
                       {% csrf_token %}
                       <div class="row gy-3 overflow-hidden">
                         <div class="col-6">
