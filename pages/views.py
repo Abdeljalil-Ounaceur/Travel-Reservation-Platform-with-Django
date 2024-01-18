@@ -29,7 +29,10 @@ def login_validation(request):
         if user is not None:
             login(request, user)
             # Redirect to a success page.
-            return HttpResponseRedirect('clientdashboard')
+            if user.is_staff:
+                return HttpResponseRedirect('admindashboard')
+            else:
+                return HttpResponseRedirect('clientdashboard')
         else:
             # Return an 'invalid login' error message.
             return render(request, "pages/LoginSingUp.html", {"error": "Invalid login"})
