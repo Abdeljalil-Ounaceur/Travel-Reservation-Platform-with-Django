@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -36,10 +37,14 @@ class Categorie(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='images/', null=True)
 
+
 class Promotion(models.Model):
     nom = models.CharField(max_length=200)
     description = models.TextField()
-    remise = models.DecimalField(max_digits=3, decimal_places=2)
+    remise = models.DecimalField(
+        max_digits=3, decimal_places=2,
+        validators=[MinValueValidator(0), MaxValueValidator(1)]
+    )
     date_debut = models.DateTimeField()
     date_fin = models.DateTimeField()
 
