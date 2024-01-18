@@ -3,6 +3,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
 from .models import CustomUser, Categorie, Offre, Promotion, Reservation, Notification
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
 
 def accuile_page(request) :
     return render(request,'pages/index.html')
@@ -58,5 +62,48 @@ def signup_validation(request):
         return HttpResponseRedirect('clientdashboard')
     else:
         return render(request, "pages/LoginSingUp.html")
+    
+
+def change_password(request):
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        user = request.user
+        if user.check_password(old_password):
+            print('correct password')
+            user.set_password(new_password)
+            user.save()
+            logout(request)
+            return redirect('login_SingUp_Page')
+
+    if(user.is_staff):
+        return redirect('admindashboard/settings')
+    else:
+        return redirect('clientdashboard/settings')
+
+#update personal information
+
+def update_profile(request):
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        user = request.user
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email = email
+        user.save()
+        if user.is_staff:
+            return HttpResponseRedirect('admindashboard')
+        else:
+            return HttpResponseRedirect('clientdashboard')
+    else:
+        return redirect('admindashboard')
+
+
+#logout_view 
+def logout_view(request):
+    logout(request)
+    return redirect('accuilepage')
 
 # Create your views here.
