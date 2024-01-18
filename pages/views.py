@@ -4,17 +4,14 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
 from .models import CustomUser, Categorie, Offre, Promotion, Reservation, Notification
-<<<<<<< HEAD
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
-=======
 from django.core.mail import EmailMessage, send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import secrets
->>>>>>> origin/main
 
 def accuile_page(request) :
     return render(request,'pages/index.html')

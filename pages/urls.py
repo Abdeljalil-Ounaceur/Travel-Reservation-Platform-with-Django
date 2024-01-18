@@ -9,13 +9,12 @@ urlpatterns = [
     path('offers',views.offers_page, name='offers_page'),
     path('login_validation',views.login_validation, name='login_validation'),
     path('signup_validation',views.signup_validation, name='signup_validation'),
-<<<<<<< HEAD
+
     path('change_password',views.change_password, name='change_password'),
     path('logout',views.logout_view, name='logout'),
     path('update_profile',views.update_profile, name='update_profile'),
-=======
+
     path('Code_validation',views.get_verificaioncode, name='Code_validation'),
     path('signup_validation1',views.email_validation, name='signup_validation1'),
     path('testmail',views.simple_mail),
->>>>>>> origin/main
 ]
