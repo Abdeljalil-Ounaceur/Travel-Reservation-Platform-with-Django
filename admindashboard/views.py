@@ -35,7 +35,15 @@ def newoffer_page(request) :
 def offers_page(request) :
     offers = Offre.objects.all()
     categories = Categorie.objects.all()
-    return render(request,'admindashboard/offers.html', {'offers': offers, 'categories': categories})
+    promotions = Promotion.objects.all()
+    return render(request,'admindashboard/offers.html', {'offers': offers, 'categories': categories, 'promotions': promotions})
+
+def promotion_page(request) :
+    promotions = Promotion.objects.all()
+    return render(request,'admindashboard/promotion.html', {'promotions': promotions})
+
+def newpromotion_page(request) :
+    return render(request,'admindashboard/newpromotion.html')
 
 def settings_page(request) :
     return render(request,'admindashboard/settings.html')
@@ -178,4 +186,41 @@ def delete_offer(request, offer_id):
     offre = get_object_or_404(Offre, id=offer_id)
     offre.delete()
     return redirect('offers')
+
+def create_promotion(request):
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        description = request.POST.get('description')
+        remise = request.POST.get('remise')
+        date_debut = request.POST.get('date_debut')
+        date_fin = request.POST.get('date_fin')
+        promotion = Promotion.objects.create(
+            nom=nom,
+            description=description,
+            remise=remise,
+            date_debut=date_debut,
+            date_fin=date_fin,
+        )
+        promotion.save()
+        return HttpResponseRedirect('promotion')
+    else:
+        return redirect('newpromotion')
+
+def edit_promotion(request, promotion_id):
+    promotion = Promotion.objects.get(id=promotion_id)
+    if request.method == 'POST':
+        promotion.nom = request.POST.get('nom')
+        promotion.description = request.POST.get('description')
+        promotion.remise = request.POST.get('remise')
+        promotion.date_debut = request.POST.get('date_debut')
+        promotion.date_fin = request.POST.get('date_fin')
+        promotion.save()
+        return redirect('promotion')
+    else:
+        return redirect('promotion')
+    
+def delete_promotion(request, promotion_id):
+    promotion = get_object_or_404(Promotion, id=promotion_id)
+    promotion.delete()
+    return redirect('promotion')
 # Create your views here.

@@ -40,64 +40,29 @@
                 <div class="col-12 grid-margin stretch-card">
                     <div class="card">
                       <div class="card-body">
-                        <h4 class="card-title">Add New Offer</h4>
-                        <form class="forms-sample" method="POST"  action="{% url 'create_offer' %}" enctype="multipart/form-data">
+                        <h4 class="card-title">Add New Promotion</h4>
+                      <form class="forms-sample" action="{% url 'create_promotion' %}" method="POST">
                             {% csrf_token %}
                             <div class="form-group">
-                                <label for="exampleInputUsername1">Title</label>
-                                <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Title" name="titre">
+                                <label for="exampleInputTitle">Title</label>
+                                <input type="text" class="form-control" id="exampleInputTitle" name="nom" placeholder="Title">
                             </div>
                             <div class="form-group">
-                                <label for="exampleTextarea1">Description</label>
-                                <textarea class="form-control" id="exampleTextarea1" rows="4" name="description"></textarea>
-                              </div>
-                              <div class="form-group">
-                                <label for="exampleTextarea1">Offer Cost</label>
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text bg-primary text-white">$</span>
-                                  </div>
-                                  <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" name="prix">
-                                  <div class="input-group-append">
-                                    <span class="input-group-text">.00</span>
-                                  </div>
-                                </div>
-                              </div>
-                            <div class="form-group">
-                                <label for="exampleTextarea1">Category</label>
-                                    <select class="form-control" name="categorie">
-                                        {% for category in categories %}
-                                        <option value="{{ category.id }}">{{ category.nom }}</option>
-                                        {% endfor %}
-                                    </select>
+                                <label for="exampleInputDescription">Description</label>
+                                <textarea class="form-control" id="exampleInputDescription" name="description" rows="4"></textarea>
                             </div>
                             <div class="form-group">
-                              <label for="exampleTextarea1">Promotion</label>
-                              <select class="form-control" name="promotion">
-                                <option value="">No Promotion</option>
-                                {% for promotion in promotions %}
-                                <option value="{{ promotion.id }}">{{ promotion.nom }} : {{promotion.remise}}%</option>
-                                {% endfor %}
-                              </select>
+                                <label for="exampleInputRemise">Discount</label>
+                                <input type="number" class="form-control" id="exampleInputRemise" name="remise" step="0.01" min="0" max="1" placeholder="Discount">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputConfirmPassword1">Date Of start</label>
-                                <input type="date" class="form-control" placeholder="dd/mm/yyyy" name="date_debut" />
+                                <label for="exampleInputDateDebut">Start Date</label>
+                                <input type="datetime-local" class="form-control" id="exampleInputDateDebut" name="date_debut">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputConfirmPassword1">Date Of return</label>
-                                <input type="date" class="form-control" placeholder="dd/mm/yyyy" name="date_fin" />
+                                <label for="exampleInputDateFin">End Date</label>
+                                <input type="datetime-local" class="form-control" id="exampleInputDateFin" name="date_fin">
                             </div>
-                            <div class="form-group">
-                                <label>File upload</label>
-                                <input type="file" name="image" class="file-upload-default">
-                                <div class="input-group col-xs-12">
-                                  <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
-                                  <span class="input-group-append">
-                                    <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
-                                  </span>
-                                </div>
-                              </div>
                           <button type="submit" class="btn btn-primary mr-2">Submit</button>
                           <button class="btn btn-dark">Cancel</button>
                         </form>
