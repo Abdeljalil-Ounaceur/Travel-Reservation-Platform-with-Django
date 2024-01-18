@@ -4,13 +4,15 @@ from django.contrib.auth import login
 from pages.models import CustomUser
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import get_object_or_404, redirect
+from pages.models import Categorie
 
 
 def accuile_page(request) :
     return render(request,'admindashboard/index.html')
 
 def category_page(request) :
-    return render(request,'admindashboard/category.html')
+    categories = Categorie.objects.all()
+    return render(request,'admindashboard/category.html', {'categories': categories})
 
 def client_page(request):
     clients = CustomUser.objects.filter(is_staff=False).order_by('-id')
@@ -80,5 +82,39 @@ def edit_client(request, client_id):
         return redirect('client')
     else:
         return redirect('client')
+
+
+def create_category(request):
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        description = request.POST.get('description')
+        image = request.FILES.get('image')
+        categorie = Categorie.objects.create(
+            nom=nom,
+            description=description,
+            image=image,
+        )
+        return HttpResponseRedirect('category')
+    else:
+        return redirect('newcategory')
+
+def edit_category(request, category_id):
+    category = get_object_or_404(Categorie, id=category_id)
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        description = request.POST.get('description')
+        image = request.FILES.get('image')
+        category.nom = nom
+        category.description = description
+        category.image = image
+        category.save()
+        return redirect('category')
+    else:
+        return redirect('category')
+
+def delete_category(request, category_id):
+    category = get_object_or_404(Categorie, id=category_id)
+    category.delete()
+    return redirect('category')
 
 # Create your views here.

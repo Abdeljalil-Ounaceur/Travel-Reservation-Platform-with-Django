@@ -15,4 +15,8 @@ urlpatterns = [
     path('edit_client/<int:client_id>/', views.edit_client, name='edit_client'),
     path('create_client', views.create_client, name="create_client"),
 
+    path('create_category', views.create_category, name="create_category"),
+    path('delete_category/<int:category_id>/', views.delete_category, name='delete_category'),
+    path('edit_category/<int:category_id>/', views.edit_category, name='edit_category'),
+
 ]

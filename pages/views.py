@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password
-from .models import CustomUser, Categorie, Voyage, Promotion, Reservation, Notification
+from .models import CustomUser, Categorie, Offre, Promotion, Reservation, Notification
 
 def accuile_page(request) :
     return render(request,'pages/index.html')

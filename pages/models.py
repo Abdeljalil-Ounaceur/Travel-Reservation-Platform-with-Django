@@ -34,23 +34,26 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class Categorie(models.Model):
     nom = models.CharField(max_length=200)
     description = models.TextField()
-
-class Voyage(models.Model):
-    titre = models.CharField(max_length=200)
-    description = models.TextField()
-    prix = models.DecimalField(max_digits=6, decimal_places=2)
-    duree = models.DurationField()
-    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
-    promotion = models.ForeignKey('Promotion', on_delete=models.SET_NULL, null=True)
+    image = models.ImageField(upload_to='images/', null=True)
 
 class Promotion(models.Model):
     nom = models.CharField(max_length=200)
     description = models.TextField()
     remise = models.DecimalField(max_digits=3, decimal_places=2)
+    date_debut = models.DateTimeField()
+    date_fin = models.DateTimeField()
+
+class Offre(models.Model):
+    titre = models.CharField(max_length=200)
+    description = models.TextField()
+    prix = models.DecimalField(max_digits=6, decimal_places=2)
+    duree = models.DurationField()
+    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
+    promotion = models.ForeignKey(Promotion, on_delete=models.SET_NULL, null=True)
 
 class Reservation(models.Model):
     utilisateur = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    voyage = models.ForeignKey(Voyage, on_delete=models.CASCADE)
+    offre = models.ForeignKey(Offre, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
 
 class Notification(models.Model):
