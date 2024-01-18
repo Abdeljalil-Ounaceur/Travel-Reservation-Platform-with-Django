@@ -41,18 +41,19 @@
                     <div class="card">
                       <div class="card-body">
                         <h4 class="card-title">Add New Category</h4>
-                        <form class="forms-sample">
+                      <form class="forms-sample" action="{% url 'create_category' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
                             <div class="form-group">
                                 <label for="exampleInputUsername1">Title</label>
-                                <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Title">
+                                <input type="text" class="form-control" id="exampleInputUsername1" name="nom" placeholder="Title">
                             </div>
                             <div class="form-group">
                                 <label for="exampleTextarea1">Description</label>
-                                <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
+                                <textarea class="form-control" id="exampleTextarea1" name="description" rows="4"></textarea>
                               </div>
                             <div class="form-group">
                                 <label>File upload</label>
-                                <input type="file" name="img[]" class="file-upload-default">
+                                <input type="file" name="image" class="file-upload-default">
                                 <div class="input-group col-xs-12">
                                   <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
                                   <span class="input-group-append">

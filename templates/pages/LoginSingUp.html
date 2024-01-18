@@ -39,7 +39,8 @@
                       </div>
                     </div>
                     
-                    <form action="#!" name="login" id="loginForm">
+                    <form action="{% url 'login_validation'%}" name="login" id="loginForm" method="POST">
+                      {% csrf_token %}
                       <div class="row gy-3 overflow-hidden">
                         <div class="col-12">
                           <div class="form-floating mb-3">
@@ -62,7 +63,8 @@
                         </div>
                       </div>
                     </form>
-                    <form action="#!" name="sign up" id="signupForm" style="display: none;">
+                    <form action="{% url 'signup_validation' %}" name="sign up" id="signupForm" style="display: none;" method="POST">
+                      {% csrf_token %}
                       <div class="row gy-3 overflow-hidden">
                         <div class="col-6">
                           <div class="form-floating mb-3">

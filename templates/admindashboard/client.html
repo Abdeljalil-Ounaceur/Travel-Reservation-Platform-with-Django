@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{% static 'assets/vendors/select2/select2.min.css'%}">
     <link rel="stylesheet" href="{% static 'assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css'%}">
     <!-- inject:css -->
+
     <!-- endinject -->
     <!-- Layout styles -->
     <link rel="stylesheet" href="{% static 'assets/css/style.css'%}">
@@ -54,54 +55,41 @@
                             <th> Client id </th>
                             <th> Full Name </th>
                             <th> Email </th>
+                            <th> Status </th>
                             <th> Action </th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                                <td> 02312 </td>
-                                <td> Khalid bn Ali </td>
-                                <td >Khalid@gmail.com </td>
-                                <td class="d-flex">
-                                    <a class="nav-link" data-toggle="modal" href="#deleteClientModal" aria-expanded="false" aria-controls="ui-basic" style="margin-right: 0; padding-right: 0; padding-left :6%;">
-                                        <div class="badge badge-outline-danger">
-                                            <span class="menu-icon">
-                                                <i class="mdi mdi-delete"></i>
-                                            </span>
-                                        </div>
-                                    </a>
-                                </td>
-                                                            
-                          </tr>
-                          <tr>
-                            <td> 02312 </td>
-                            <td> Khalid bn Ali </td>
-                            <td >Khalid@gmail.com </td>
-                            <td class="d-flex">
-                                <a class="nav-link" data-toggle="modal" href="#deleteClientModal" aria-expanded="false" aria-controls="ui-basic" style="margin-right: 0; padding-right: 0; padding-left :6%;">
-                                    <div class="badge badge-outline-danger">
-                                        <span class="menu-icon">
-                                            <i class="mdi mdi-delete"></i>
-                                        </span>
-                                    </div>
-                                </a>
-                            </td>                           
-                          </tr>
-                          <tr>
-                            <td> 02312 </td>
-                            <td> Khalid bn Ali </td>
-                            <td >Khalid@gmail.com </td>
-                            <td class="d-flex">
-                                <a class="nav-link" data-toggle="modal" href="#deleteClientModal" aria-expanded="false" aria-controls="ui-basic" style="margin-right: 0; padding-right: 0; padding-left :6%;">
-                                    <div class="badge badge-outline-danger">
-                                        <span class="menu-icon">
-                                            <i class="mdi mdi-delete"></i>
-                                        </span>
-                                    </div>
-                                </a>
-                            </td>
-                                                        
-                          </tr>
+                          {% for client in clients %}
+                            <tr>
+                              <td> {{ client.id }} </td>
+                              <td> {{ client.first_name }} {{ client.last_name }} </td>
+                              <td> {{ client.email }} </td>
+                              <td class="{% if client.is_active %}text-primary{% else %}text-danger{% endif %}">
+                                {% if client.is_active %}
+                                  Active
+                                {% else %}
+                                  Inactive
+                                {% endif %}
+                              </td>
+                              <td class="d-flex">
+                                  <a class="nav-link" data-toggle="modal" href="#editClientModal{{client.id}}" aria-expanded="false" aria-controls="ui-basic" style="margin-right: 0; padding-right: 0; padding-left :6%;">
+                                      <div class="badge badge-outline-success">
+                                          <span class="menu-icon">
+                                              <i class="mdi mdi-pencil"></i>
+                                          </span>
+                                      </div>
+                                  </a>
+                                  <a class="nav-link" data-toggle="modal" href="#deleteClientModal{{client.id}}" aria-expanded="false" aria-controls="ui-basic" style="margin-right: 0; padding-right: 0; padding-left :6%;">
+                                      <div class="badge badge-outline-danger">
+                                          <span class="menu-icon">
+                                              <i class="mdi mdi-delete"></i>
+                                          </span>
+                                      </div>
+                                  </a>
+                              </td>
+                            </tr>
+                          {% endfor %}
                         </tbody>
                       </table>
                     </div>
@@ -111,27 +99,66 @@
               </div>
               
             </div>
-            <div id="deleteClientModal" class="modal fade">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <form method="get" id="DeleteAssistantForm">
-                      
+            {% for client in clients %}
+            <div id="editClientModal{{client.id}}" class="modal fade">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <form method="post" action="{% url 'edit_client' client.id %}">
+                    {% csrf_token %}
                       <div class="modal-header">						
-                        <h4 class="modal-title">Delete Client</h4>
+                        <h4 class="modal-title">Edit Client</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                       </div>
                       <div class="modal-body">					
-                        <p>Are you sure you want to delete these Records?</p>
-                        <p class="text-warning"><small>This action cannot be undone.</small></p>
+                        <div class="form-group">
+                          <label for="first_name">First Name</label>
+                          <input type="text" class="form-control" id="first_name" name="first_name" value="{{ client.first_name }}">
+                        </div>
+                        <div class="form-group">
+                          <label for="last_name">Last Name</label>
+                          <input type="text" class="form-control" id="last_name" name="last_name" value="{{ client.last_name }}">
+                        </div>
+                        <div class="form-group">
+                          <label for="email">Email</label>
+                          <input type="email" class="form-control" id="email" name="email" value="{{ client.email }}">
+                        </div>
+                        <div class="form-group">
+                          <label for="email">Active</label>
+                          <input type="checkbox" class="form-control" id="is_active" name="is_active" {% if client.is_active %} checked {% endif %}>
+                        </div>
                       </div>
                       <div class="modal-footer">
                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                        <input type="submit" class="btn btn-danger" value="Delete">
+                        <input type="submit" class="btn btn-primary" value="Save">
                       </div>
                     </form>
                   </div>
                 </div>
               </div>
+              {% endfor %}
+              {% for client in clients %}
+              <div id="deleteClientModal{{client.id}}" class="modal fade">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <form method="post" action="{% url 'delete_client' client.id %}">
+                      {% csrf_token %}
+                        <div class="modal-header">						
+                          <h4 class="modal-title">Delete Client</h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">					
+                          <p>Are you sure you want to delete <span class="font-weight-bold mx-1">{{ client.email }}</span>?</p>
+                          <p class="text-warning"><small>This action cannot be undone.</small></p>
+                        </div>
+                        <div class="modal-footer">
+                          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                          <input type="submit" class="btn btn-danger" value="Delete">
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
             </div>
           </div>
           <!-- content-wrapper ends -->
