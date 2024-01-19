@@ -149,7 +149,7 @@ def email_validation(request):
         request.session['password'] = password
         request.session['email'] = email
         request.session['verification_code'] = verification_code
-        return render(request, "pages/SaiserVerificationCode.html")
+        return render(request, "pages/SaisirVerificationCode.html")
 
     # Handle other HTTP methods if needed
     return render(request, "pages/LoginSingUp.html")
@@ -174,7 +174,7 @@ def get_verificaioncode(request) :
         return HttpResponseRedirect('clientdashboard')
     else:
         messages.info(request, "Invalide Code")
-        return render(request, "pages/SaiserVerificationCode.html")   
+        return render(request, "pages/SaisirVerificationCode.html")   
 # test emails : 
 
 def simple_mail(request):

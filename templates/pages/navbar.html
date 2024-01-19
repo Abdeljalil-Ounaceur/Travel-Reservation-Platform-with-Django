@@ -85,9 +85,20 @@
                 </ul>
             </nav>
 
-            <a href="{% url 'login_SingUp_Page' %}" class="btn btn-primary" style="text-decoration: none; color: white;">
-              Login Or Sign Up
-            </a>
+            <div style="display: flex;">
+                {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                    <a href="{% url 'admindashboard' %}" class="btn btn-primary" style="text-decoration: none; color: white; margin-right:5px">Admin Dashboard</a>
+                {% else %}
+                    <a href="{% url 'clientdashboard' %}" class="btn btn-primary" style="text-decoration: none; color: white; margin-right:5px">Client Dashboard</a>
+                {% endif %}
+                <a href="{% url 'logout' %}" class="btn" style="text-decoration: none; color: red; border-color: red; background-color:white; opacity:0.8">Logout</a>
+                {% else %}
+                    <a href="{% url 'login_SingUp_Page' %}" class="btn btn-primary" style="text-decoration: none; color: white;">
+                        Login Or Sign Up
+                    </a>
+                {% endif %}
+            </div>
           
         </div>
     </div>
