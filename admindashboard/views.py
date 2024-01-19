@@ -140,7 +140,7 @@ def create_offer(request):
         date_fin = request.POST.get('date_fin')
         categorie_id = request.POST.get('categorie')
         promotion_id = request.POST.get('promotion')
-        categorie = Categorie.objects.get(id=categorie_id)
+        categorie = Categorie.objects.get(id=categorie_id) if categorie_id else None
         promotion = Promotion.objects.get(id=promotion_id) if promotion_id else None
         offre = Offre.objects.create(
             titre=titre,

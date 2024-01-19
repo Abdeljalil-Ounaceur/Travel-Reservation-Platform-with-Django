@@ -131,6 +131,7 @@
                         <div class="form-group">
                           <label for="exampleTextarea1">Category</label>
                           <select class="form-control" name="categorie">
+                            <option value="" {% if not offer.category %} selected {% endif %}>No Category</option>
                             {% for category in categories %}
                                 <option value="{{ category.id }}" {% if offer.categorie.id == category.id %} selected {% endif %}>{{ category.nom }}</option>
                               {% endfor %}
