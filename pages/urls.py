@@ -17,4 +17,6 @@ urlpatterns = [
     path('Code_validation',views.get_verificaioncode, name='Code_validation'),
     path('signup_validation1',views.email_validation, name='signup_validation1'),
     path('testmail',views.simple_mail),
+
+    path('reserver_offre/<int:offer_id>/', views.reserver_offre, name='reserver_offre'),
 ]

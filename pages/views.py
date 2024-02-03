@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
@@ -205,3 +206,14 @@ def simple_mail(request):
     email_message.send()
 
     return HttpResponse("Verification email sent successfully")
+
+
+def reserver_offre(request,offer_id):
+    offer = get_object_or_404(Offre, id=offer_id)
+    reservation = Reservation.objects.create(
+            offre = offer,
+            utilisateur = request.user,
+            date = datetime.datetime.now()
+        )
+    reservation.save()
+    return redirect("clientdashboard")
