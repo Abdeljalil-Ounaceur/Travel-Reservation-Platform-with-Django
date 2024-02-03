@@ -135,6 +135,8 @@ def create_offer(request):
         titre = request.POST.get('titre')
         description = request.POST.get('description')
         prix = request.POST.get('prix')
+        lieu = request.POST.get('lieu')
+        capacite = request.POST.get('capacité')
         image = request.FILES.get('image')
         date_debut = request.POST.get('date_debut')
         date_fin = request.POST.get('date_fin')
@@ -146,6 +148,8 @@ def create_offer(request):
             titre=titre,
             description=description,
             prix=prix,
+            lieu=lieu,
+            capacite=capacite,
             image=image,
             date_debut=date_debut,
             date_fin=date_fin,
@@ -162,16 +166,20 @@ def edit_offer(request, offer_id):
         titre = request.POST.get('titre')
         description = request.POST.get('description')
         prix = request.POST.get('prix')
+        lieu = request.POST.get('lieu')
+        capacite = request.POST.get('capacité')
         image = request.FILES.get('image')
         date_debut = request.POST.get('date_debut')
         date_fin = request.POST.get('date_fin')
         categorie_id = request.POST.get('categorie')
         promotion_id = request.POST.get('promotion')
-        categorie = Categorie.objects.get(id=categorie_id)
+        categorie = Categorie.objects.get(id=categorie_id) if categorie_id else None
         promotion = Promotion.objects.get(id=promotion_id) if promotion_id else None
         offre.titre = titre
         offre.description = description
         offre.prix = prix
+        offre.lieu = lieu
+        offre.capacite = capacite
         offre.image = image
         offre.date_debut = date_debut
         offre.date_fin = date_fin

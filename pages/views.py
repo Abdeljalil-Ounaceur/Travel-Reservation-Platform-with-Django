@@ -24,9 +24,11 @@ def contact_us_page(request) :
 def about_us_page(request) :
     return render(request,'pages/AboutUs.html')
 def package_page(request) :
-    return render(request,'pages/Package.html')
+    categories = Categorie.objects.all()
+    return render(request,'pages/Package.html', {'categories': categories})
 def offers_page(request) :
-    return render(request,'pages/Offers.html')
+    offers = Offre.objects.all()
+    return render(request,'pages/Offers.html', {'offers': offers})
 
 def login_validation(request):
     if request.method == 'POST':

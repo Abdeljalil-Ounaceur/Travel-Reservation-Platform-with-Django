@@ -49,65 +49,68 @@
                 </div>
               </section>
               <section class="package" id="package" style="display: flex;">
-                <section id="sidebar" >
-                    <div id ="filterSection" class="d-flex flex-column align-items-center" style="background-color: hsl(0, 0%, 98%);">
-                        <h6 class="p-1 border-bottom" style="margin-bottom: 25px;">Filter By</h6>
-                        <form action="">
-                            <div class="mb-3">
-                                <p class="mb-2">Price</p>
-                                <select id="inputState" class="form-control">
-                                    <option selected>Choose...</option>
-                                    <option>...</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                              <p class="mb-2">Duréé</p>
-                              <select id="inputState" class="form-control">
-                                  <option selected>Choose...</option>
-                                  <option>...</option>
-                              </select>
-                          </div>
-                            <div class="mb-3">
-                                <p class="mb-2">Newest</p>
-                                <select id="inputState" class="form-control">
-                                    <option selected>Choose...</option>
-                                    <option>...</option>
-                                    </select>
-                            </div>
-                            <div class="mb-3">
-                            <button class="btn btn-primary">Applay Filter</button>
-                            </div>
-                         </form>
-                    </div>
+                <section id="sidebar">
+                  <div id="filterSection" class="d-flex flex-column align-items-center" style="background-color: hsl(0, 0%, 98%);">
+                    <h6 class="p-1 border-bottom" style="margin-bottom: 25px;">Filter By</h6>
+                    <form id="filterForm" action="">
+                      <div class="mb-3">
+                        <p class="mb-2">Price Range</p>
+                        <div class="d-flex">
+                          <input type="number" id="minPriceFilter" class="form-control mr-2" placeholder="Min" min="0">
+                          <input type="number" id="maxPriceFilter" class="form-control" placeholder="Max" min="0">
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <p class="mb-2">Duréé (jours)</p>
+                        <div class="d-flex">
+                          <input type="number" id="minDurationFilter" class="form-control mr-2" placeholder="Min" min="0">
+                          <input type="number" id="maxDurationFilter" class="form-control" placeholder="Max" min="0">
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <p class="mb-2">Sort</p>
+                        <select id="sortFilter" class="form-control">
+                          <option selected>Choose...</option>
+                          <option value="newest">Newest</option>
+                          <option value="closest">Closest</option>
+                          <option value="longest">Longest Duration</option>
+                          <option value="shortest">Shortest Duration</option>
+                          <option value="highest">Highest Price</option>
+                          <option value="lowest">Lowest Price</option>
+                        </select>
+                      </div>
+                      <div class="mb-3">
+                        <button id="applyFilterBtn" class="btn btn-primary">Apply Filter</button>
+                      </div>
+                    </form>
+                  </div>
                 </section>
               
                 <div class="container" style="flex: 1;">
         
                     <ul class="package-list">
-        
+                        {% for offer in offers %}
                         <li>
                           <div class="package-card">
             
                             <figure class="card-banner">
-                              <img src="{% static 'images/packege-1.jpg'%}" alt="Experience The Great Holiday On Beach" loading="lazy">
+                                <img src="{{ offer.image.url }}" alt="Experience The Great Holiday On Beach" loading="lazy" style="width: 300px; height: 250px;">
                             </figure>
             
                             <div class="card-content">
             
-                              <h3 class="h3 card-title">Experience The Great Holiday On Beach</h3>
+                              <h3 class="h3 card-title">{{ offer.titre }}</h3>
             
                               <p class="card-text">
-                                Laoreet, voluptatum nihil dolor esse quaerat mattis explicabo maiores, est aliquet porttitor! Eaque,
-                                cras, aspernatur.
+                                {{ offer.description }}
                               </p>
             
                               <ul class="card-meta-list">
             
                                 <li class="card-meta-item">
                                   <div class="meta-box">
-                                    <ion-icon name="time"></ion-icon>
-            
-                                    <p class="text">7D/6N</p>
+                                    <ion-icon name="calendar"></ion-icon>
+                                    <p class="text">{{ offer.date_debut|date:"d M Y" }}</p>
                                   </div>
                                 </li>
             
@@ -115,7 +118,7 @@
                                   <div class="meta-box">
                                     <ion-icon name="people"></ion-icon>
             
-                                    <p class="text">pax: 10</p>
+                                    <p class="text">pax: {{ offer.capacite }}</p>
                                   </div>
                                 </li>
             
@@ -123,7 +126,7 @@
                                   <div class="meta-box">
                                     <ion-icon name="location"></ion-icon>
             
-                                    <p class="text">Malaysia</p>
+                                    <p class="text">{{ offer.lieu }}</p>
                                   </div>
                                 </li>
             
@@ -133,7 +136,7 @@
             
                             <div class="card-price">
             
-                              <div class="wrapper">
+                              {% comment %} <div class="wrapper">
             
                                 <p class="reviews">(25 reviews)</p>
             
@@ -145,10 +148,10 @@
                                   <ion-icon name="star"></ion-icon>
                                 </div>
             
-                              </div>
+                              </div> {% endcomment %}
             
                               <p class="price">
-                                $750
+                                ${{ offer.prix }}
                                 <span>/ per person</span>
                               </p>
             
@@ -158,155 +161,7 @@
             
                           </div>
                         </li>
-            
-                        <li>
-                          <div class="package-card">
-            
-                            <figure class="card-banner">
-                              <img src="{% static 'images/packege-2.jpg'%}" alt="Summer Holiday To The Oxolotan River" loading="lazy">
-                            </figure>
-            
-                            <div class="card-content">
-            
-                              <h3 class="h3 card-title">Summer Holiday To The Oxolotan River</h3>
-            
-                              <p class="card-text">
-                                Laoreet, voluptatum nihil dolor esse quaerat mattis explicabo maiores, est aliquet porttitor! Eaque,
-                                cras, aspernatur.
-                              </p>
-            
-                              <ul class="card-meta-list">
-            
-                                <li class="card-meta-item">
-                                  <div class="meta-box">
-                                    <ion-icon name="time"></ion-icon>
-            
-                                    <p class="text">7D/6N</p>
-                                  </div>
-                                </li>
-            
-                                <li class="card-meta-item">
-                                  <div class="meta-box">
-                                    <ion-icon name="people"></ion-icon>
-            
-                                    <p class="text">pax: 10</p>
-                                  </div>
-                                </li>
-            
-                                <li class="card-meta-item">
-                                  <div class="meta-box">
-                                    <ion-icon name="location"></ion-icon>
-            
-                                    <p class="text">Malaysia</p>
-                                  </div>
-                                </li>
-            
-                              </ul>
-            
-                            </div>
-            
-                            <div class="card-price">
-            
-                              <div class="wrapper">
-            
-                                <p class="reviews">(20 reviews)</p>
-            
-                                <div class="card-rating">
-                                  <ion-icon name="star"></ion-icon>
-                                  <ion-icon name="star"></ion-icon>
-                                  <ion-icon name="star"></ion-icon>
-                                  <ion-icon name="star"></ion-icon>
-                                  <ion-icon name="star"></ion-icon>
-                                </div>
-            
-                              </div>
-            
-                              <p class="price">
-                                $520
-                                <span>/ per person</span>
-                              </p>
-            
-                              <button class="btn btn-secondary">Book Now</button>
-            
-                            </div>
-            
-                          </div>
-                        </li>
-            
-                        <li>
-                          <div class="package-card">
-            
-                            <figure class="card-banner">
-                              <img src="{% static 'images/packege-3.jpg'%}" alt="Santorini Island's Weekend Vacation" loading="lazy">
-                            </figure>
-            
-                            <div class="card-content">
-            
-                              <h3 class="h3 card-title">Santorini Island's Weekend Vacation</h3>
-            
-                              <p class="card-text">
-                                Laoreet, voluptatum nihil dolor esse quaerat mattis explicabo maiores, est aliquet porttitor! Eaque,
-                                cras, aspernatur.
-                              </p>
-            
-                              <ul class="card-meta-list">
-            
-                                <li class="card-meta-item">
-                                  <div class="meta-box">
-                                    <ion-icon name="time"></ion-icon>
-            
-                                    <p class="text">7D/6N</p>
-                                  </div>
-                                </li>
-            
-                                <li class="card-meta-item">
-                                  <div class="meta-box">
-                                    <ion-icon name="people"></ion-icon>
-            
-                                    <p class="text">pax: 10</p>
-                                  </div>
-                                </li>
-            
-                                <li class="card-meta-item">
-                                  <div class="meta-box">
-                                    <ion-icon name="location"></ion-icon>
-            
-                                    <p class="text">Malaysia</p>
-                                  </div>
-                                </li>
-            
-                              </ul>
-            
-                            </div>
-            
-                            <div class="card-price">
-            
-                              <div class="wrapper">
-            
-                                <p class="reviews">(40 reviews)</p>
-            
-                                <div class="card-rating">
-                                  <ion-icon name="star"></ion-icon>
-                                  <ion-icon name="star"></ion-icon>
-                                  <ion-icon name="star"></ion-icon>
-                                  <ion-icon name="star"></ion-icon>
-                                  <ion-icon name="star"></ion-icon>
-                                </div>
-            
-                              </div>
-            
-                              <p class="price">
-                                $660
-                                <span>/ per person</span>
-                              </p>
-            
-                              <button class="btn btn-secondary">Book Now</button>
-            
-                            </div>
-            
-                          </div>
-                        </li>
-            
+                        {% endfor %}
                       </ul>
         
                 </div>
@@ -318,48 +173,6 @@
         
     </main>
     
+    
 </body>
 </html>
-
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const dateDepartInput = document.getElementById("checkin");
-    const dateRetourInput = document.getElementById("checkout");
-
-    // Ajouter un écouteur d'événements à la date de départ
-    dateDepartInput.addEventListener("input", function() {
-      // Récupérer la date de départ sélectionnée
-      const dateDepart = new Date(dateDepartInput.value);
-
-      // Vérifier si la date de départ est dans le passé
-      const aujourdHui = new Date();
-      if (dateDepart < aujourdHui) {
-        // Si la date de départ est dans le passé, réinitialiser à la date d'aujourd'hui
-        dateDepartInput.value = aujourdHui.toISOString().split('T')[0];
-      }
-
-      // Définir la date de retour minimale comme Date De Départ + 1 jour
-      const dateRetourMin = new Date(dateDepart);
-      dateRetourMin.setDate(dateRetourMin.getDate() + 1);
-
-      // Formater la date minimale pour l'input de date
-      const jour = String(dateRetourMin.getDate()).padStart(2, '0');
-      const mois = String(dateRetourMin.getMonth() + 1).padStart(2, '0');
-      const annee = dateRetourMin.getFullYear();
-      const dateRetourMinFormatted = `${annee}-${mois}-${jour}`;
-
-      // Appliquer la date minimale à l'input de date de retour
-      dateRetourInput.min = dateRetourMinFormatted;
-    });
-  });
-  function scrollToSection() {
-    var section = document.getElementById('package');
-    if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-</script>
-
-
-
