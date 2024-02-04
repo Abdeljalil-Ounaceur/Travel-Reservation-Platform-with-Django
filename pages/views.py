@@ -1,3 +1,4 @@
+from ast import Compare
 import datetime
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
@@ -15,7 +16,9 @@ from django.utils.html import strip_tags
 import secrets
 
 def accuile_page(request) :
-    return render(request,'pages/index.html')
+    categories = Categorie.objects.all().reverse()[:3]
+    offers = Offre.objects.all().reverse()[:3]
+    return render(request,'pages/index.html', {'categories':categories, 'offers':offers})
 
 def login_SingUp_Page(request) :
     return render(request,'pages/LoginSingUp.html')
