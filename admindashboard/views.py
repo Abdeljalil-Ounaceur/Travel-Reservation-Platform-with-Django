@@ -4,7 +4,10 @@ from django.contrib.auth import login
 from pages.models import CustomUser
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import get_object_or_404, redirect
-from pages.models import Categorie, Offre, Categorie, Promotion
+from pages.models import Categorie, Offre, Categorie, Promotion, Message
+from django.core.mail import EmailMessage, send_mail
+from django.template.loader import render_to_string
+from django.contrib import messages
 
 
 def accuile_page(request) :
@@ -22,7 +25,33 @@ def newclient_page(request) :
     return render(request,'admindashboard/newclient.html')
 
 def contactus_page(request) :
-    return render(request,'admindashboard/contactus.html')
+    message = Message.objects.all()
+    return render(request,'admindashboard/contactus.html', {'message': message})
+
+def send_message_to_client(request) :
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        subject = "ِContact Us"
+        from_email = "med@mail.com"  # Replace with your email
+        to_email = [email]
+
+        html_message = render_to_string('message_to_client.html', {'message': message, 'name': name})
+
+        email_message = EmailMessage(
+            subject=subject,
+            body=html_message,  # HTML content goes here
+            from_email=from_email,
+            to=to_email,
+        )
+        email_message.content_subtype = "html"
+        email_message.send()
+        messages.info(request,"Message sent successfully")
+        message = Message.objects.all()
+        return render(request,'admindashboard/contactus.html', {'message': message})
+    message = Message.objects.all()
+    return render(request,'admindashboard/contactus.html', {'message': message})
 
 def newcategory_page(request) :
     return render(request,'admindashboard/newcategory.html')

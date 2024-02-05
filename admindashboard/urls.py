@@ -29,5 +29,6 @@ urlpatterns = [
     path('create_promotion', views.create_promotion, name="create_promotion"),
     path('delete_promotion/<int:promotion_id>/', views.delete_promotion, name='delete_promotion'),
     path('edit_promotion/<int:promotion_id>/', views.edit_promotion, name='edit_promotion'),
+    path('send_message_to_client',views.send_message_to_client, name="send_message_to_client")
 
 ]

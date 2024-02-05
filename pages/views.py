@@ -1,11 +1,12 @@
-from ast import Compare
 import datetime
+import io
+from django.http import FileResponse
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password   
-from .models import CustomUser, Categorie, Offre, Promotion, Reservation, Notification
+from .models import CustomUser, Categorie, Offre, Promotion, Reservation, Notification, Message
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
@@ -13,7 +14,31 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.template.loader import get_template
+from django.template import Context
 import secrets
+import stripe
+from django.template import Context
+
+
+
+stripe.api_key = "sk_test_51OaJ54AyNfWQ41o0yvnqrz8RysqN2LUd4ZZLRV7XPj0FEvzhjjVjUWaA39GcjegB764bjTTypYBetN22Ve5kL6v600q9DlvDzL"
+
+def payment_page(request) :
+    if request.method == 'POST':
+        stripe.Customer.create(
+            name = request.POST.get('name'),
+            email = request.POST.get('email')
+        )
+        stripe.Charge.create(
+        amount=1585,
+        currency="usd",
+        source="tok_visa",
+        )
+    return render(request,'pages/payment.html')
+
+def checkout_page(request) :
+    return render(request,'pages/Checkout.html')
 
 def accuile_page(request) :
     categories = Categorie.objects.all().reverse()[:3]
@@ -56,6 +81,17 @@ def offers_page(request) :
     
     categories = Categorie.objects.all()
     return render(request,'pages/Offers.html', {'offers': offers, 'categories':categories, 'filters':filters})
+
+def client_message(request) :
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        Message.objects.create(name=name, email=email, message=message)
+        messages.info(request,"Message sent successfully")
+        return render(request,'pages/ContactUs.html')
+    messages.info(request,"Message not sent")
+    return render(request,'pages/ContactUs.html')
 
 def login_validation(request):
     if request.method == 'POST':
@@ -232,7 +268,6 @@ def simple_mail(request):
     email_message.send()
 
     return HttpResponse("Verification email sent successfully")
-
 
 def reserver_offre(request,offer_id):
     offer = get_object_or_404(Offre, id=offer_id)
