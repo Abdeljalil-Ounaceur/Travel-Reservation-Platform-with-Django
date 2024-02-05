@@ -1,10 +1,11 @@
+import datetime
 import io
 from django.http import FileResponse
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password   
 from .models import CustomUser, Categorie, Offre, Promotion, Reservation, Notification, Message
 from django.contrib.auth import logout
 from django.shortcuts import redirect
@@ -40,7 +41,9 @@ def checkout_page(request) :
     return render(request,'pages/Checkout.html')
 
 def accuile_page(request) :
-    return render(request,'pages/index.html')
+    categories = Categorie.objects.all().reverse()[:3]
+    offers = Offre.objects.all().reverse()[:3]
+    return render(request,'pages/index.html', {'categories':categories, 'offers':offers})
 
 def login_SingUp_Page(request) :
     return render(request,'pages/LoginSingUp.html')
@@ -50,9 +53,34 @@ def contact_us_page(request) :
 def about_us_page(request) :
     return render(request,'pages/AboutUs.html')
 def package_page(request) :
-    return render(request,'pages/Package.html')
+    categories = Categorie.objects.all()
+    return render(request,'pages/Package.html', {'categories': categories})
 def offers_page(request) :
-    return render(request,'pages/Offers.html')
+    print(request.GET)
+    filters = {
+        'minPrice' : int(request.GET.get('minPrice')) if request.GET.get('minPrice') else None,
+        'maxPrice' : int(request.GET.get('maxPrice')) if request.GET.get('maxPrice') else None,
+        'minDuration' : int(request.GET.get('minDuration')) if request.GET.get('minDuration') else None,
+        'maxDuration' : int(request.GET.get('maxDuration')) if request.GET.get('maxDuration') else None,
+        'sort': request.GET.get('sort'),
+        'categorie':int(request.GET.get('categorie')) if request.GET.get('categorie') else None
+    }
+    offers_unfiltered = Offre.objects.all()
+    offers = []
+    for offer in offers_unfiltered:
+        days = (offer.date_fin - offer.date_debut).days
+        if filters['minPrice'] and offer.prix < filters['minPrice'] \
+        or filters['maxPrice'] and offer.prix > filters['maxPrice'] \
+        or filters['minDuration'] and  days < filters['minDuration'] \
+        or filters['maxDuration'] and days > filters['maxDuration'] \
+        or filters['categorie'] and ( not offer.categorie or offer.categorie.id != filters['categorie']) :
+            continue
+        offers.append(offer)
+    
+    offers.sort(key=lambda offer:offer.date_debut)
+    
+    categories = Categorie.objects.all()
+    return render(request,'pages/Offers.html', {'offers': offers, 'categories':categories, 'filters':filters})
 
 def client_message(request) :
     if request.method == 'POST':
@@ -186,7 +214,7 @@ def email_validation(request):
         request.session['password'] = password
         request.session['email'] = email
         request.session['verification_code'] = verification_code
-        return render(request, "pages/SaiserVerificationCode.html")
+        return render(request, "pages/SaisirVerificationCode.html")
 
     # Handle other HTTP methods if needed
     return render(request, "pages/LoginSingUp.html")
@@ -211,7 +239,7 @@ def get_verificaioncode(request) :
         return HttpResponseRedirect('clientdashboard')
     else:
         messages.info(request, "Invalide Code")
-        return render(request, "pages/SaiserVerificationCode.html")   
+        return render(request, "pages/SaisirVerificationCode.html")   
 # test emails : 
 
 def simple_mail(request):
@@ -241,3 +269,12 @@ def simple_mail(request):
 
     return HttpResponse("Verification email sent successfully")
 
+def reserver_offre(request,offer_id):
+    offer = get_object_or_404(Offre, id=offer_id)
+    reservation = Reservation.objects.create(
+            offre = offer,
+            utilisateur = request.user,
+            date = datetime.datetime.now()
+        )
+    reservation.save()
+    return redirect("clientdashboard")

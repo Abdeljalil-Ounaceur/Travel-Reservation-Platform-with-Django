@@ -55,8 +55,12 @@ class Offre(models.Model):
     image = models.ImageField(upload_to='images/', null=True)
     date_debut = models.DateTimeField()
     date_fin = models.DateTimeField()
-    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
+    categorie = models.ForeignKey(Categorie, on_delete=models.SET_NULL, null=True)
     promotion = models.ForeignKey(Promotion, on_delete=models.SET_NULL, null=True)
+    capacite = models.IntegerField(default=1)
+    lieu = models.CharField(max_length=200, default="")
+    is_active = models.BooleanField(default=True)
+
 
 class Reservation(models.Model):
     utilisateur = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

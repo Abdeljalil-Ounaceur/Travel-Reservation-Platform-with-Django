@@ -91,38 +91,30 @@
                                       <thead>
                                           <tr>
                                               <th>id</th>
-                                              <th>Destination</th>
-                                              <th>First Name</th>
-                                              <th>Last Name</th>
-                                              <th>date de depart</th>
+                                              <th>Offre</th>
+                                              <th>lieu</th>
+                                              <th>date de reservation</th>
+                                              <th>status</th>
                                               <th>Action</th>
                                           </tr>
                                       </thead>
                                       <tbody>
+                                        {% for reservation in reservations %}
                                           <tr>
-                                              <td>25</td>
-                                              <td>agadir</td>
-                                              <td>Mamun</td>
-                                              <td>Roshid</td>
-                                              <td>@Facebook</td>
+                                              <td>{{ reservation.id }}</td>
+                                              <td>{{reservation.offre.titre}}</td>
+                                              <td>{{ reservation.offre.lieu}}</td>
+                                              <td>{{reservation.date}}</td>
+                                              <td>
+                                                {% if reservation.status == True %}
+                                                  <span class="label label-success">Active</span>
+                                                {% else %}
+                                                  <span class="label label-warning">Expirée</span>
+                                                {% endif %}
+                                              </td>
                                               <td><a title="Landing Page" href="settings.html" aria-expanded="false"><span class="fa fa-cog"></a></span></td>
                                           </tr>
-                                          <tr>
-                                            <td>1</td>
-                                            <td>agadir</td>
-                                            <td>Mamun</td>
-                                            <td>Roshid</td>
-                                            <td>@Facebook</td>
-                                            <td><a title="Landing Page" href="settings.html" aria-expanded="false"><span class="fa fa-cog"></a></span></td>
-                                          </tr>
-                                          <tr>
-                                            <td>1</td>
-                                            <td>agadir</td>
-                                            <td>Mamun</td>
-                                            <td>Roshid</td>
-                                            <td>@Facebook</td>
-                                            <td><a title="Landing Page" href="settings.html" aria-expanded="false"><span class="fa fa-cog"></a></span></td>
-                                          </tr>
+                                        {% endfor %}
                                       </tbody>
                                   </table>
                               </div>
