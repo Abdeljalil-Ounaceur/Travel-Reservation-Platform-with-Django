@@ -24,8 +24,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=30)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)  # new field to indicate if the user is an admin
-    # add additional fields here
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
