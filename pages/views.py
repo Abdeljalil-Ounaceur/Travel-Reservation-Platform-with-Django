@@ -278,3 +278,59 @@ def reserver_offre(request,offer_id):
         )
     reservation.save()
     return redirect("clientdashboard")
+
+
+def forgot_password_email_validation(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+
+        # Check if the email already exists
+        if CustomUser.objects.filter(email=email).exists():
+            verification_code = secrets.token_hex(4)
+            subject = "Verification Code"
+            from_email = "med@mail.com"  # Replace with your email
+            to_email = [email]
+
+            html_message = render_to_string('test.html', {'verification_code': verification_code})
+            email_message = EmailMessage(
+                subject=subject,
+                body=html_message,  # HTML content goes here
+                from_email=from_email,
+                to=to_email,
+            )
+            email_message.content_subtype = "html"
+            email_message.send()
+            request.session['email'] = email
+            request.session['verification_code'] = verification_code
+            return render(request, "pages/ForgotpasswordVeri.html")
+        messages.info(request, "Email not exists")
+        return render(request, 'pages/Forgotpassword.html')
+
+    # Handle other HTTP methods if needed
+    return render(request, "pages/Forgotpassword.html")
+
+
+def forgot_password_veri(request) :
+    if request.method == 'POST':
+        VeriCode = request.POST.get('VeriCode')
+        verification_code = request.session.get('verification_code', '')
+        if VeriCode == verification_code :
+            return render(request, "pages/ForgotpasswordUpdate.html")
+        else:
+            messages.info(request, "Invalide Code")
+            return render(request, "pages/ForgotpasswordVeri.html")
+    return render(request,'pages/ForgotpasswordVeri.html')
+
+def forgot_password(request):
+    return render(request,'pages/Forgotpassword.html')
+
+def forgot_password_update(request) :
+    if request.method == 'POST':
+        password = request.POST.get('passwordupdate')
+        email = request.session.get('email', '')
+        user = CustomUser.objects.get(email=email)
+        user.set_password(password)
+        user.save()
+        login(request, user)
+        return HttpResponseRedirect('clientdashboard')
+    return render(request,'pages/ForgotpasswordUpdate.html')
