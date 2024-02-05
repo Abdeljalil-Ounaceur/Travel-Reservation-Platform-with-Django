@@ -67,5 +67,8 @@ class Notification(models.Model):
     utilisateur = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     message = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
-
+class Message(models.Model) :
+    email = models.EmailField()
+    message = models.TextField()
+    name = models.CharField(max_length=50)
 # Create your models here.
