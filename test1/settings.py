@@ -141,3 +141,5 @@ EMAIL_HOST_PASSWORD = '5c54168408af0a'
 EMAIL_PORT = '2525'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'agence@example.com'
+
+handler404 = 'pages.views.page_not_found'
