@@ -52,36 +52,46 @@
                 <section id="sidebar">
                   <div id="filterSection" class="d-flex flex-column align-items-center" style="background-color: hsl(0, 0%, 98%);">
                     <h6 class="p-1 border-bottom" style="margin-bottom: 25px;">Filter By</h6>
-                    <form id="filterForm" action="">
+                    <form id="filterForm" action="{% url 'offers_page' %}">
                       <div class="mb-3">
                         <p class="mb-2">Price Range</p>
                         <div class="d-flex">
-                          <input type="number" id="minPriceFilter" class="form-control mr-2" placeholder="Min" min="0">
-                          <input type="number" id="maxPriceFilter" class="form-control" placeholder="Max" min="0">
+                          <input type="number" name="minPrice" class="form-control mr-2" placeholder="Min" min="0" value = "{{filters.minPrice}}">
+                          <input type="number" name="maxPrice" class="form-control" placeholder="Max" min="0" value = "{{filters.maxPrice}}">
                         </div>
                       </div>
                       <div class="mb-3">
                         <p class="mb-2">Duréé (jours)</p>
                         <div class="d-flex">
-                          <input type="number" id="minDurationFilter" class="form-control mr-2" placeholder="Min" min="0">
-                          <input type="number" id="maxDurationFilter" class="form-control" placeholder="Max" min="0">
+                          <input type="number" name="minDuration" class="form-control mr-2" placeholder="Min" min="0" value = "{{filters.minDuration}}">
+                          <input type="number" name="maxDuration" class="form-control" placeholder="Max" min="0" value = "{{filters.maxDuration}}">
                         </div>
                       </div>
                       <div class="mb-3">
-                        <p class="mb-2">Sort</p>
-                        <select id="sortFilter" class="form-control">
-                          <option selected>Choose...</option>
-                          <option value="newest">Newest</option>
-                          <option value="closest">Closest</option>
-                          <option value="longest">Longest Duration</option>
-                          <option value="shortest">Shortest Duration</option>
-                          <option value="highest">Highest Price</option>
-                          <option value="lowest">Lowest Price</option>
+                        <p class="mb-2">Categorie</p>
+                        <select name="categorie" class="form-control">
+                          <option selected value="">Selectionner...</option>
+                          {% for categorie in categories %}
+                          <option value="{{categorie.id}}" {% if categorie.id == filters.categorie %} selected {% endif %}>{{categorie.nom}}</option>
+                          {% endfor %}
                         </select>
                       </div>
                       <div class="mb-3">
-                        <button id="applyFilterBtn" class="btn btn-primary">Apply Filter</button>
+                        <p class="mb-2">Sort</p>
+                        <select name="sort" class="form-control">
+                          <option selected value="">Selectionner...</option>
+                          <option value="newest" {% if 'newest' == filters.sort %} selected {% endif %}>Newest</option>
+                          <option value="closest" {% if 'closest' == filters.sort %} selected {% endif %}>Closest</option>
+                          <option value="longest" {% if 'longest' == filters.sort %} selected {% endif %}>Longest Duration</option>
+                          <option value="shortest" {% if 'shortest' == filters.sort %} selected {% endif %}>Shortest Duration</option>
+                          <option value="highest" {% if 'highest' == filters.sort %} selected {% endif %}>Highest Price</option>
+                          <option value="lowest" {% if 'lowest' == filters.sort %} selected {% endif %}>Lowest Price</option>
+                        </select>
                       </div>
+                      <div class="mb-3">
+                        <button id="applyFilterBtn" class="btn btn-primary">Apply Filters</button>
+                      </div>
+                      <a href={% url 'offers_page' %} class="btn btn-secondary">Clear  Filters</a>
                     </form>
                   </div>
                 </section>
