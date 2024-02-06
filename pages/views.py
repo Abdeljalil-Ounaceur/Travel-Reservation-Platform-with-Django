@@ -29,20 +29,42 @@ stripe.api_key = "sk_test_51OaJ54AyNfWQ41o0yvnqrz8RysqN2LUd4ZZLRV7XPj0FEvzhjjVjU
 @require_login
 def payment_page(request) :
     if request.method == 'POST':
+        nombre_personnes = request.session.get('nombre_personnes', '')
+        offerId = request.session.get('offerId', '')
+        offer = get_object_or_404(Offre, id=offerId)     
+        prix_total = int((offer.prix  - (offer.promotion.remise if offer.promotion else 0)*offer.prix)* int(nombre_personnes))
+        prix_total = prix_total*100
         stripe.Customer.create(
             name = request.POST.get('name'),
             email = request.POST.get('email')
         )
         stripe.Charge.create(
-        amount=1585,
+        amount=prix_total,
         currency="usd",
         source="tok_visa",
         )
-    return render(request,'pages/payment.html')
+        reservation = Reservation.objects.create(
+            offre = offer,
+            utilisateur = request.user,
+            date = datetime.datetime.now(),
+            nombre_personnes = nombre_personnes,
+            prix = prix_total/100
+        )
+        reservation.save()
+        return redirect("clientdashboard")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 @require_login
 def checkout_page(request) :
-    return render(request,'pages/Checkout.html')
+    if request.method == 'POST':
+        request.session['nombre_personnes'] = request.POST.get("nombre_personnes")
+        request.session['offerId'] = request.POST.get("offerId")
+        offer = get_object_or_404(Offre, id=request.POST.get("offerId"))
+        
+        prix_total = (offer.prix  - (offer.promotion.remise if offer.promotion else 0)*offer.prix)* int(request.POST.get("nombre_personnes"))
+        return render(request,'pages/Checkout.html',{'prix_total':prix_total})
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    
 
 def accuile_page(request) :
     categories = Categorie.objects.all().reverse()[:3]
@@ -370,3 +392,4 @@ def forgot_password_update(request) :
         login(request, user)
         return HttpResponseRedirect('clientdashboard')
     return render(request,'pages/ForgotpasswordUpdate.html')
+
