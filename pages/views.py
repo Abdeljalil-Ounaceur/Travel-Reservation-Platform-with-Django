@@ -213,10 +213,12 @@ def update_profile(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
+        image = request.FILES.get('image')
         user = request.user
         user.first_name = first_name
         user.last_name = last_name
         user.email = email
+        user.image = image
         user.save()
         if user.is_staff:
             return redirect('admindashboard/settings')

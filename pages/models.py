@@ -24,6 +24,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=30)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    image  = models.ImageField(upload_to='images/', null=True, default='images/default_user.jfif')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
