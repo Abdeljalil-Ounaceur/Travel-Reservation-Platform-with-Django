@@ -93,6 +93,17 @@ def client_message(request) :
     messages.info(request,"Message not sent")
     return render(request,'pages/ContactUs.html')
 
+def client_profil_message(request) :
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+        Message.objects.create(name=name, email=email, message=message)
+        messages.info(request,"Message sent successfully")
+        return render(request,'clientdashboard/contactUs.html')
+    messages.info(request,"Message not sent")
+    return render(request,'pages/ContactUs.html')
+
 def login_validation(request):
     if request.method == 'POST':
         email = request.POST.get('email')
