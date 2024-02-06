@@ -19,8 +19,12 @@ urlpatterns = [
     path('Code_validation',views.get_verificaioncode, name='Code_validation'),
     path('signup_validation1',views.email_validation, name='signup_validation1'),
     path('client_message',views.client_message, name='client_message'),
+    path('client_profil_message',views.client_profil_message, name='client_profil_message'),
     path('testmail',views.simple_mail),
 
-  path('reserver_offre/<int:offer_id>/', views.reserver_offre, name='reserver_offre'),
-  
+    path('reserver_offre/<int:offer_id>/', views.reserver_offre, name='reserver_offre'),
+    path('forgot_password_email_validation',views.forgot_password_email_validation , name="forgot_password_email_validation"),
+    path('forgot_password',views.forgot_password,name="forgot_password"),
+    path('forgot_password_update',views.forgot_password_update,name="forgot_password_update"),
+    path('forgot_password_veri',views.forgot_password_veri,name="forgot_password_veri")
 ]
