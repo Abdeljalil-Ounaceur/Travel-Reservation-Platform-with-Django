@@ -219,11 +219,11 @@ def update_profile(request):
         user.email = email
         user.save()
         if user.is_staff:
-            return HttpResponseRedirect('admindashboard')
+            return redirect('admindashboard/settings')
         else:
-            return HttpResponseRedirect('clientdashboard')
+            return redirect('clientdashboard/settings')
     else:
-        return redirect('admindashboard')
+        return redirect('accuilepage')
 
 
 #logout_view 
