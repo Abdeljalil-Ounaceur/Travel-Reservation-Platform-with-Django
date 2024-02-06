@@ -92,6 +92,12 @@ def offers_page(request) :
     return render(request,'pages/Offers.html', {'offers': offers, 'categories':categories, 'filters':filters})
 
 @require_client
+def offer_details(request,offer_id):
+    offer = get_object_or_404(Offre, id=offer_id)
+    return render(request,'pages/Offer.html', {'offer':offer})
+
+
+@require_client
 def client_message(request) :
     if request.method == 'POST':
         name = request.POST.get('name')

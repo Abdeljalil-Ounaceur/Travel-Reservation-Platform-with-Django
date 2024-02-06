@@ -21,6 +21,7 @@ urlpatterns = [
     path('client_message',views.client_message, name='client_message'),
     path('testmail',views.simple_mail),
 
-  path('reserver_offre/<int:offer_id>/', views.reserver_offre, name='reserver_offre'),
+    path('offer_details/<int:offer_id>/', views.offer_details, name='offer_details'),
+    path('reserver_offre/<int:offer_id>/', views.reserver_offre, name='reserver_offre'),
   
 ]
