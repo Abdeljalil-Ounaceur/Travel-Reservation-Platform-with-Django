@@ -1,11 +1,13 @@
 import datetime
 import io
+from math import log
+import re
 from django.http import FileResponse
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.hashers import make_password   
+from django.contrib.auth.hashers import make_password 
 from .models import CustomUser, Categorie, Offre, Promotion, Reservation, Notification, Message
 from django.contrib.auth import logout
 from django.shortcuts import redirect
@@ -18,12 +20,13 @@ from django.template.loader import get_template
 from django.template import Context
 import secrets
 import stripe
-from django.template import Context
+from .decorators import require_admin, require_client, require_logout, require_login
 
 
 
 stripe.api_key = "sk_test_51OaJ54AyNfWQ41o0yvnqrz8RysqN2LUd4ZZLRV7XPj0FEvzhjjVjUWaA39GcjegB764bjTTypYBetN22Ve5kL6v600q9DlvDzL"
 
+@require_login
 def payment_page(request) :
     if request.method == 'POST':
         stripe.Customer.create(
@@ -37,6 +40,7 @@ def payment_page(request) :
         )
     return render(request,'pages/payment.html')
 
+@require_login
 def checkout_page(request) :
     return render(request,'pages/Checkout.html')
 
@@ -45,6 +49,8 @@ def accuile_page(request) :
     offers = Offre.objects.all().reverse()[:3]
     return render(request,'pages/index.html', {'categories':categories, 'offers':offers})
 
+#user should not be logged in
+@require_logout
 def login_SingUp_Page(request) :
     return render(request,'pages/LoginSingUp.html')
 
@@ -56,8 +62,9 @@ def package_page(request) :
     categories = Categorie.objects.all()
     return render(request,'pages/Package.html', {'categories': categories})
 def offers_page(request) :
-    print(request.GET)
     filters = {
+        'titre': request.GET.get('titre'),
+        'lieu': request.GET.get('lieu'),
         'minPrice' : int(request.GET.get('minPrice')) if request.GET.get('minPrice') else None,
         'maxPrice' : int(request.GET.get('maxPrice')) if request.GET.get('maxPrice') else None,
         'minDuration' : int(request.GET.get('minDuration')) if request.GET.get('minDuration') else None,
@@ -69,7 +76,9 @@ def offers_page(request) :
     offers = []
     for offer in offers_unfiltered:
         days = (offer.date_fin - offer.date_debut).days
-        if filters['minPrice'] and offer.prix < filters['minPrice'] \
+        if filters['titre'] and filters['titre'].lower() not in offer.titre.lower() \
+        or filters['lieu'] and filters['lieu'].lower() not in offer.lieu.lower() \
+        or filters['minPrice'] and offer.prix < filters['minPrice'] \
         or filters['maxPrice'] and offer.prix > filters['maxPrice'] \
         or filters['minDuration'] and  days < filters['minDuration'] \
         or filters['maxDuration'] and days > filters['maxDuration'] \
@@ -82,6 +91,13 @@ def offers_page(request) :
     categories = Categorie.objects.all()
     return render(request,'pages/Offers.html', {'offers': offers, 'categories':categories, 'filters':filters})
 
+@require_client
+def offer_details(request,offer_id):
+    offer = get_object_or_404(Offre, id=offer_id)
+    return render(request,'pages/Offer.html', {'offer':offer})
+
+
+@require_client
 def client_message(request) :
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -93,6 +109,7 @@ def client_message(request) :
     messages.info(request,"Message not sent")
     return render(request,'pages/ContactUs.html')
 
+@require_logout
 def client_profil_message(request) :
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -115,15 +132,16 @@ def login_validation(request):
             login(request, user)
             # Redirect to a success page.
             if user.is_staff:
-                return HttpResponseRedirect('admindashboard')
+                return redirect('admindashboard')
             else:
-                return HttpResponseRedirect('clientdashboard')
+                return redirect('clientdashboard')
         else:
             messages.info(request,"Check email or password")
             return render(request,'pages/LoginSingUp.html')
     else:
         return render(request, "pages/LoginSingUp.html")
 
+@require_logout
 def signup_validation(request):
     if request.method == 'POST':
         first_name = request.POST.get('prenom')
@@ -147,7 +165,7 @@ def signup_validation(request):
     else:
         return render(request, "pages/LoginSingUp.html")
     
-
+@require_login
 def change_password(request):
     if request.method == 'POST':
         old_password = request.POST.get('old_password')
@@ -167,6 +185,7 @@ def change_password(request):
 
 #update personal information
 
+@require_login
 def update_profile(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
@@ -186,6 +205,7 @@ def update_profile(request):
 
 
 #logout_view 
+@require_login
 def logout_view(request):
     logout(request)
     return redirect('accuilepage')
@@ -193,6 +213,7 @@ def logout_view(request):
 # Create your views here.
 #validation email :
 
+@require_logout
 def email_validation(request):
     if request.method == 'POST':
         first_name = request.POST.get('prenom')
@@ -230,6 +251,7 @@ def email_validation(request):
     # Handle other HTTP methods if needed
     return render(request, "pages/LoginSingUp.html")
 
+@require_logout
 def get_verificaioncode(request) :  
     VeriCode = request.POST.get('VeriCode')
     verification_code = request.session.get('verification_code', '')
@@ -280,6 +302,7 @@ def simple_mail(request):
 
     return HttpResponse("Verification email sent successfully")
 
+@require_client
 def reserver_offre(request,offer_id):
     offer = get_object_or_404(Offre, id=offer_id)
     reservation = Reservation.objects.create(
@@ -290,6 +313,8 @@ def reserver_offre(request,offer_id):
     reservation.save()
     return redirect("clientdashboard")
 
+def page_not_found(request, exception=None) :
+    return render(request,'pages/page_not_found.html')
 
 def forgot_password_email_validation(request):
     if request.method == 'POST':

@@ -17,11 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from pages.views import page_not_found
+from django.urls import path, re_path
+from pages.views import page_not_found
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('pages.urls')),
-    path('admindashboard/',include('admindashboard.urls')),
-    path('clientdashboard/',include('clientdashboard.urls')),
+    path('', include('pages.urls')),
+    path('admindashboard/', include('admindashboard.urls')),
+    path('clientdashboard/', include('clientdashboard.urls')),
+    re_path(r'.*', page_not_found, name='page_not_found')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

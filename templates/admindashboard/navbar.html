@@ -6,8 +6,22 @@
       </button>
       <ul class="navbar-nav w-100">
         <li class="nav-item w-100">
-          <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search">
-            <input type="text" class="form-control" placeholder="Search Offers">
+          <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search" action="{% url 'offers' %}">
+            <input type="text" name="search" class="form-control mr-2" placeholder="Search Offers" {% if filters.search %} value = "{{filters.search}}" {% endif %}>
+            {% comment %} <button class="nav-link btn btn-dark create-new-button" onclick="toggleFilters()">filtres</button>
+            <div id="filters">
+              hhhhhhhhhhhhhh
+            </div>
+            <script>
+              function toggleFilters(){
+                  div = document.getElementById("filters")
+                  if(div.hidden){
+                    div.hidden = false
+                  }else{
+                    div.hidden = true
+                  }
+              }
+            </script> {% endcomment %}
           </form>
         </li>
       </ul>
