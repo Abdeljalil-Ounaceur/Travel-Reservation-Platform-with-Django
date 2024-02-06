@@ -87,7 +87,7 @@
                                       <h1>Update Settings</h1>
                                   </div>
                               </div>
-                              <form action="{% url 'update_profile'%}" method="POST">
+                              <form action="{% url 'update_profile'%}" method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <div class="devit-card-custom">
                                     <div class="form-group">
@@ -104,7 +104,7 @@
                                                     <div class="input prepend-small-btn">
                                                         <div class="file-button">
                                                             Browse
-                                                            <input type="file" onchange="document.getElementById('prepend-small-btn').value = this.value;">
+                                                            <input type="file" name="image" onchange="document.getElementById('prepend-small-btn').value = this.value;">
                                                         </div>
                                                         <input type="text" id="prepend-small-btn" placeholder="no file selected">
                                                     </div>
