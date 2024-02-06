@@ -48,10 +48,11 @@ def payment_page(request) :
             utilisateur = request.user,
             date = datetime.datetime.now(),
             nombre_personnes = nombre_personnes,
+            prix = prix_total/100
         )
         reservation.save()
         return redirect("clientdashboard")
-    return render(request,'pages/payment.html')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 @require_login
 def checkout_page(request) :

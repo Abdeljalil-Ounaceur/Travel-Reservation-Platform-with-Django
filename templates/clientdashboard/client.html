@@ -94,6 +94,7 @@
                                               <th>Offre</th>
                                               <th>lieu</th>
                                               <th>date de reservation</th>
+                                              <th>prix</th>
                                               <th>status</th>
                                               <th>Action</th>
                                           </tr>
@@ -105,6 +106,7 @@
                                               <td>{{reservation.offre.titre}}</td>
                                               <td>{{ reservation.offre.lieu}}</td>
                                               <td>{{reservation.date}}</td>
+                                              <td>{{reservation.prix}}</td>
                                               <td>
                                                 {% if reservation.status == True %}
                                                   <span class="label label-success">Active</span>
@@ -112,7 +114,7 @@
                                                   <span class="label label-warning">Expirée</span>
                                                 {% endif %}
                                               </td>
-                                              <td><a title="PDF" href="{%url 'pdf_view'%}" aria-expanded="false"><span class="fa fa-file-pdf-o"></a></span>
+                                              <td><a title="PDF" href="pdf_view?reservation_id={{reservation.id}}" aria-expanded="false"><span class="fa fa-file-pdf-o"></a></span>
                                               </td>
                                           </tr>
                                         {% endfor %}
