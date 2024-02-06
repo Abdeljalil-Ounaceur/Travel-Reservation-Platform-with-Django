@@ -10,7 +10,6 @@
             <input type="text" name="search" class="form-control mr-2" placeholder="Search Offers" {% if filters.search %} value = "{{filters.search}}" {% endif %}>
             {% comment %} <button class="nav-link btn btn-dark create-new-button" onclick="toggleFilters()">filtres</button>
             <div id="filters">
-              hhhhhhhhhhhhhh
             </div>
             <script>
               function toggleFilters(){
@@ -100,7 +99,7 @@
           <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
             <div class="navbar-profile">
               <img class="img-xs rounded-circle" src="{% static 'assets/images/faces/face15.jpg'%}" alt="">
-              <p class="mb-0 d-none d-sm-block navbar-profile-name">Henry Klein</p>
+              <p class="mb-0 d-none d-sm-block navbar-profile-name">{{request.user.first_name}} {{ request.user.last_name}}</p>
               <i class="mdi mdi-menu-down d-none d-sm-block"></i>
             </div>
           </a>
