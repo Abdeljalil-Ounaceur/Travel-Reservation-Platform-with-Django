@@ -27,5 +27,8 @@ urlpatterns = [
     path('', include('pages.urls')),
     path('admindashboard/', include('admindashboard.urls')),
     path('clientdashboard/', include('clientdashboard.urls')),
-    re_path(r'.*', page_not_found, name='page_not_found')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns+=[
+    re_path(r'.*', page_not_found, name='page_not_found')
+]

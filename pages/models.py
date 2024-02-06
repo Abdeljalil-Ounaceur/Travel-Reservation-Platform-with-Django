@@ -64,6 +64,7 @@ class Reservation(models.Model):
     utilisateur = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     offre = models.ForeignKey(Offre, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
+    nombre_personnes = models.IntegerField(default=1)
 
 class Notification(models.Model):
     utilisateur = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
