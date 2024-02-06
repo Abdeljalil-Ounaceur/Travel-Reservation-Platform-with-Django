@@ -110,7 +110,6 @@ def create_client(request):
             is_staff=False,
             is_active=is_active,
         )
-        login(request, user)
         return HttpResponseRedirect('client')
     else:
         return redirect('newclient')

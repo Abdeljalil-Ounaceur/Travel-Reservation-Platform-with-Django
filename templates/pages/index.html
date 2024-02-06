@@ -94,6 +94,9 @@
                   <ul class="popular-list">
                     {% for categorie in categories%}
                     <li>
+                      <script>
+                        console.log("{{categorie.image.url}}")
+                      </script>
                       <div class="popular-card">
         
                         <figure class="card-img">
@@ -226,7 +229,7 @@
                     {% endfor %}
                   </ul>
         
-                  <button class="btn btn-primary">View All Offers</button>
+                  <button class="btn btn-primary" ><a style="color:white" href="{% url 'offers_page' %}">View All Offers</a></button>
         
                 </div>
               </section>     
