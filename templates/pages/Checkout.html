@@ -1,29 +1,26 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tourly - Travel Agency</title>
+
+    <link rel="shortcut icon" href="{% static 'images/favicon.svg' %}" type="image/svg+xml">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://js.stripe.com/v3/"></script>
     <!-- Required meta tags -->
     <style>
-        body {
-            font-family: 'Roboto', sans-serif!important;
-            margin:0;
-            padding:0;
-            box-sizing: border-box;
-        }
         
-        .mainscreen
-        {
-            min-height: 100vh;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            background-color: #DFDBE5;
-            background-image: url("https://wallpaperaccess.com/full/3063067.png");
-            color:#963E7B;
-        }
         
         .card {
             width: 60rem;
@@ -192,37 +189,45 @@
           }
     </style>
   </head>
-  <body>
-    <div class="mainscreen">
-    <!-- <img src="https://image.freepik.com/free-vector/purple-background-with-neon-frame_52683-34124.jpg"  class="bgimg " alt="">--> 
-      <div class="card">
-        <div class="leftside">
-            <h1>CheckOut</h1>
-            <h2>Payment Information</h2>
-            <p>Cardholder Name</p>
-        </div>
-        <div class="rightside">
-          <form action="{%url "payment_page"%}" id="payement-form" method = "post">
-            {% csrf_token %}  
-            <h1>CheckOut</h1>
-            <h2>Payment Information</h2>
-            <p>Cardholder Name</p>
-            <input type="text" class="inputbox" name="name" required />
-            <p>Email</p>
-            <input type="email" class="inputbox" name="email" required />
-            
-                <label for="card-element">Credit or debit card</label>
-                <div id="card-element">
-                  <!-- a stripe element will be inserted here -->
-                </div>
-                <!-- used to dispaly form errors -->
-                <div id="card-errors" role="alert"></div>
-                <button type="submit" class="button">CheckOut</button>
-          </form>
-        </div>
-      </div>
-    </div>
+  <body id="top">
+    {%  include "pages/navbar.html"  %}
+    <main>
+        <main>
+            <article>
+              <section class="hero" id="home">
+                  <div class="mainscreen">
+                  <!-- <img src="https://image.freepik.com/free-vector/purple-background-with-neon-frame_52683-34124.jpg"  class="bgimg " alt="">--> 
+                    <div class="card">
+                      <div class="leftside" style="background-image: url('{% static 'images/payimg.png' %}');">
+                      </div>
+                      <div class="rightside">
+                        <form action="{%url "payment_page"%}" id="payement-form" method = "post">
+                          {% csrf_token %}  
+                          <h2>Payment Information</h2>
+                          <p>Cardholder Name</p>
+                          <input type="text" class="inputbox" name="name" required />
+                          <p>Email</p>
+                          <input type="email" class="inputbox" name="email" required />
+                          <p>Total : $</p>
+                              <label for="card-element">Credit or debit card</label>
+                              <div id="card-element">
+                                <!-- a stripe element will be inserted here -->
+                              </div>
+                              <!-- used to dispaly form errors -->
+                              <div id="card-errors" role="alert"></div>
+                              <button type="submit" class="button">CheckOut</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </article>
+        </main>
+    
+            {%  include "pages/footer.html"  %}  
+    </main>
   </body>
+  </html>
   <script>
     var stripe=Stripe('pk_test_51OaJ54AyNfWQ41o0yME7gpGdNXZsY6ug1AihHZYoQ6JnZ4nTd6JRv8VbEJAeX6ekZ96hWNMftr2pcJYFF0cjpEWx00gwGszPhM');
     var elements  = stripe.elements();
