@@ -10,11 +10,11 @@ from xhtml2pdf import pisa
 
 @require_client
 def accuile_page(request) :
-    reserations = Reservation.objects.filter(utilisateur=request.user).reverse()
-    for reservation in reserations :
+    reservations = Reservation.objects.filter(utilisateur=request.user).reverse()
+    for reservation in reservations :
         reservation.status = reservation.offre.date_debut > reservation.date
 
-    return render(request,'clientdashboard/client.html',{'reservations':reserations})
+    return render(request,'clientdashboard/client.html',{'reservations':reservations})
 
 @require_client
 def settings_page(request) :

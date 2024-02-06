@@ -1,18 +1,65 @@
+import datetime
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth import login
 from pages.models import CustomUser
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import get_object_or_404, redirect
-from pages.models import Categorie, Offre, Categorie, Promotion, Message
+from pages.models import Categorie, Offre, Categorie, Promotion, Message, Reservation
 from django.core.mail import EmailMessage, send_mail
 from django.template.loader import render_to_string
 from django.contrib import messages
 from pages.decorators import require_admin
 
 @require_admin
-def accuile_page(request) :
-    return render(request,'admindashboard/index.html')
+def accuile_page(request):
+    reservations = Reservation.objects.all()
+    current_month = 0
+    last_month = 0
+    current_month_revenue = 0
+    last_month_revenue = 0
+    today_revenue = 0
+    yesterday_revenue = 0
+    today_reservations = 0
+    yesterday_reservations = 0
+
+    now = datetime.datetime.now()
+    for reservation in reservations:
+        reservation.status = reservation.offre.date_debut > reservation.date
+
+        if reservation.date.month == now.month:
+            current_month += 1
+            current_month_revenue += reservation.offre.prix
+        elif reservation.date.month == now.month - 1:
+            last_month += 1
+            last_month_revenue += reservation.offre.prix
+
+        if reservation.date.day == now.day:
+            today_revenue += reservation.offre.prix
+            today_reservations += 1
+        elif reservation.date.day == now.day - 1:
+            yesterday_revenue += reservation.offre.prix
+            yesterday_reservations += 1
+    
+    #calculate the monthly and daily growth (' calculations in total)
+    reservations_monthly_growth = (current_month - last_month) / last_month * 100 if last_month != 0 else 100
+    revenu_monthly_growth = (current_month_revenue - last_month_revenue) / last_month_revenue * 100 if last_month_revenue != 0 else 100
+    reservations_daily_growth = (today_reservations - yesterday_reservations) / yesterday_reservations * 100 if yesterday_reservations != 0 else 100
+    revenu_daily_growth = (today_revenue - yesterday_revenue) / yesterday_revenue * 100 if yesterday_revenue != 0 else 100
+
+    reservations = sorted(reservations, key=lambda x: x.status, reverse=True)
+
+    return render(request, 'admindashboard/index.html', {
+        'reservations': reservations,
+        'current_month': current_month,
+        'current_month_revenue': current_month_revenue,
+        'today_reservations': today_reservations,
+        'today_revenue': today_revenue,
+        'reservations_monthly_growth': reservations_monthly_growth,
+        'revenu_monthly_growth': revenu_monthly_growth,
+        'reservations_daily_growth': reservations_daily_growth,
+        'revenu_daily_growth': revenu_daily_growth,
+    })
 
 @require_admin
 def category_page(request) :
