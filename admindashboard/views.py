@@ -70,10 +70,19 @@ def newoffer_page(request) :
     return render(request,'admindashboard/newoffer.html', {'categories': categories, 'promotions': promotions})
 @require_admin
 def offers_page(request) :
-    offers = Offre.objects.all()
+    filters = {
+        'search': request.GET.get('search')
+    }
+    offers_unfiltered = Offre.objects.all()
+    offers = []
+    for offer in offers_unfiltered:
+        if filters['search'] and filters['search'].lower() not in offer.titre.lower():
+            continue
+        offers.append(offer)
+    
     categories = Categorie.objects.all()
     promotions = Promotion.objects.all()
-    return render(request,'admindashboard/offers.html', {'offers': offers, 'categories': categories, 'promotions': promotions})
+    return render(request,'admindashboard/offers.html', {'offers': offers, 'categories': categories, 'promotions': promotions, 'filters':filters})
 @require_admin
 def promotion_page(request) :
     promotions = Promotion.objects.all()

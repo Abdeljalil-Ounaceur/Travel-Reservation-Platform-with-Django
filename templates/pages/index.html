@@ -49,26 +49,30 @@
               <section class="tour-search" id="tour-search-section">
                 <div class="container">
         
-                  <form action="" class="tour-search-form" onsubmit="return validateForm()">
+                  <form action="{% url 'offers_page' %}" class="tour-search-form">
                     <div class="input-wrapper">
-                        <label for="depart" class="input-label">Départ</label>
-                        <input type="text" name="depart" id="depart" required placeholder="Enter Depart" class="input-field">
+                        <label for="titre" class="input-label">Nom de L'Offre</label>
+                        <input type="text" name="titre" id="titre" placeholder="Entrer Titre" class="input-field">
                     </div>
                 
                     <div class="input-wrapper">
                         <label for="destination" class="input-label">Destination</label>
-                        <input type="text" name="destination" id="destination" required placeholder="Enter Destination" class="input-field">
+                        <input type="text" name="lieu" id="destination"  placeholder="Enter Destination" class="input-field">
                     </div>
                 
                     <div class="input-wrapper">
-                        <label for="checkin" class="input-label">Date De Départ</label>
-                        <input type="date" name="checkin" id="checkin" required class="input-field">
-                    </div>
+                        <label for="checkin" class="input-label">Prix de l'Offre</label>
+                        <div class="d-flex">
+                          <input type="number" name="minPrice" class="input-field" style="width:90px; float:left; margin-right:5px" placeholder="Min" min="0" value = "{{filters.minPrice}}">
+                          <input type="number" name="maxPrice" class="input-field" style="width:90px;" placeholder="Max" min="0" value = "{{filters.maxPrice}}">
+                        </div>                      </div>
                 
                     <div class="input-wrapper">
-                        <label for="checkout" class="input-label">Date De Retour</label>
-                        <input type="date" name="checkout" id="checkout" required class="input-field">
-                    </div>
+                        <label for="checkout" class="input-label">Nombre De jours</label>
+                        <div class="d-flex">
+                          <input type="number" name="minDuration" class="input-field" style="width:90px; float:left; margin-right:5px" placeholder="Min" min="0" value = "{{filters.minPrice}}">
+                          <input type="number" name="maxDuration" class="input-field" style="width:90px;" placeholder="Max" min="0" value = "{{filters.maxPrice}}">
+                        </div>                      </div>
                 
                     <button type="submit" class="btn btn-secondary">Cherche</button>
                 </form>

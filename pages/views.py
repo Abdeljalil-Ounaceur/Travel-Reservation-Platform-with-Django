@@ -62,8 +62,9 @@ def package_page(request) :
     categories = Categorie.objects.all()
     return render(request,'pages/Package.html', {'categories': categories})
 def offers_page(request) :
-    print(request.GET)
     filters = {
+        'titre': request.GET.get('titre'),
+        'lieu': request.GET.get('lieu'),
         'minPrice' : int(request.GET.get('minPrice')) if request.GET.get('minPrice') else None,
         'maxPrice' : int(request.GET.get('maxPrice')) if request.GET.get('maxPrice') else None,
         'minDuration' : int(request.GET.get('minDuration')) if request.GET.get('minDuration') else None,
@@ -75,7 +76,9 @@ def offers_page(request) :
     offers = []
     for offer in offers_unfiltered:
         days = (offer.date_fin - offer.date_debut).days
-        if filters['minPrice'] and offer.prix < filters['minPrice'] \
+        if filters['titre'] and filters['titre'].lower() not in offer.titre.lower() \
+        or filters['lieu'] and filters['lieu'].lower() not in offer.lieu.lower() \
+        or filters['minPrice'] and offer.prix < filters['minPrice'] \
         or filters['maxPrice'] and offer.prix > filters['maxPrice'] \
         or filters['minDuration'] and  days < filters['minDuration'] \
         or filters['maxDuration'] and days > filters['maxDuration'] \

@@ -51,8 +51,14 @@
               <section class="package" id="package" style="display: flex;">
                 <section id="sidebar">
                   <div id="filterSection" class="d-flex flex-column align-items-center" style="background-color: hsl(0, 0%, 98%);">
-                    <h6 class="p-1 border-bottom" style="margin-bottom: 25px;">Filter By</h6>
+                    
                     <form id="filterForm" action="{% url 'offers_page' %}">
+                      <h6 class="p-1" style="margin-bottom: 5px;">Recherche</h6>
+                      <div class="mb-3">
+                        <input name="titre" class="form-control mr-2" placeholder="Titre de l'offre" {% if filters.titre %} value = "{{filters.titre}}" {% endif %}>
+                        <input name="lieu" class="form-control mr-2 mt-3" placeholder="Lieu" {% if filters.lieu %} value = "{{filters.lieu}}" {% endif %}>
+                      </div>
+                      <h6 class="p-1 border-bottom" style="margin-bottom: 25px;">Filters</h6>
                       <div class="mb-3">
                         <p class="mb-2">Price Range</p>
                         <div class="d-flex">
