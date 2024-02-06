@@ -7,6 +7,7 @@ from io import BytesIO
 from django.template.loader import get_template
 from django.views import View
 from xhtml2pdf import pisa
+from django.shortcuts import get_object_or_404
 
 @require_client
 def accuile_page(request) :
@@ -38,21 +39,22 @@ def render_to_pdf(template_src, context_dict={}):
 
 
 #Opens up page as PDF
+@require_client
 def ViewPDF(request):
-        data = {
-            "company": "Dennnis Ivanov Company",
-            "address": "123 Street name",
-            "city": "Vancouver",
-            "state": "WA",
-            "zipcode": "98663",
-
-
-            "phone": "555-555-2345",
-            "email": "youremail@dennisivy.com",
-            "website": "dennisivy.com",
+    reservation_id=request.GET.get("reservation_id")
+    reservation = get_object_or_404(Reservation, id=reservation_id)
+    title = reservation.offre.titre
+    prix = reservation.offre.prix
+    prixTotal =reservation.prix
+    nbpersonne = reservation.nombre_personnes
+    data = {
+            "title": title,
+            "prix": prix,
+            "prixTotal": prixTotal,
+            "nbpersonne": nbpersonne,
             }
-        pdf = render_to_pdf('pdf_template.html', data)
-        return HttpResponse(pdf, content_type='application/pdf')
+    pdf = render_to_pdf('pdf_template.html', data)
+    return HttpResponse(pdf, content_type='application/pdf')
 
 
 #Automaticly downloads to PDF file

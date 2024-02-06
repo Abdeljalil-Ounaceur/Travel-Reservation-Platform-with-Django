@@ -29,6 +29,7 @@ urlpatterns = [
     path('clientdashboard/', include('clientdashboard.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-urlpatterns += [
+
+urlpatterns+=[
     re_path(r'.*', page_not_found, name='page_not_found')
 ]

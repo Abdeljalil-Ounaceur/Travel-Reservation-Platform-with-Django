@@ -29,7 +29,7 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
       rel="stylesheet">
 </head>
-<body id="top">
+<body id="top" onload="calculPrix()">
 
     {%  include "pages/navbar.html"  %}
 
@@ -38,12 +38,12 @@
             <article>
                 <section class="hero" id="home">  
                     {% comment %} <div class="container" style="flex: 1;width:1000px"> {% endcomment %}
-                        <div class="package-card mx-5 " style="margin-top:100px; margin-bottom: 0px">
+                        <div class="package-card mx-5 " style="margin-top:100px; margin-bottom: 0px; height: 300px;">
                           <figure class="card-banner">
-                            <img src="{{ offer.image.url }}" alt="Experience The Great Holiday On Beach" loading="lazy" style="width: 300px; height: 250px;">
+                            <img src="{{ offer.image.url }}" alt="Experience The Great Holiday On Beach" loading="lazy" style="width: 300px; height: 300px;">
                           </figure>
 
-                          <div class="card-content">
+                          <div class="card-content" style="margin-left:-25%;">
 
                             <h3 class="h3 card-title">{{ offer.titre }}</h3>
 
@@ -109,7 +109,8 @@
                           </div>
 
                         </div>
-
+                        <form action="{%url 'checkout_page'%}" method="POST">
+                          {%csrf_token%}
                         <div class="package-card mx-5 p-3" style="margin-top:-100px">
                           <div>
                             <h5>Number of People</h5>
@@ -117,11 +118,13 @@
                           </div>
                           <div>
                             <h5>Total Price</h5>
-                            <input type="number" id="prix_total" name="prix_total" class="form-control w-50" style="margin:auto" placeholder="" min="0" disabled>
+                            <input type="number" id="prix_total" name="prix_total" value="" class="form-control w-50" style="margin:auto" placeholder="" min="0" disabled>
                           </div>
+                          <input type="hidden" id="offerId" name="offerId" value="{{offer.id}}">
                           <div style="margin-top:15px">
-                            <a class="btn btn-secondary" href="{% url 'offer_details' offer.id %}">Payment</a>
+                            <button type="submit" class="btn btn-secondary">Payment</button>
                           </div>
+                        </form>
                           <script>
                             function calculPrix() {
                               const offerPrice = parseInt("{{ offer.prix }}");
@@ -140,7 +143,12 @@
                                 }
                                 nb_p.value = quantity;
                                 const total = quantity * offerPrice;
-                                document.getElementById('prix_total').value = total - total * promotion;
+                                if (promotion) {
+                                  document.getElementById('prix_total').value = total - total * promotion;
+                                }
+                                else {
+                                  document.getElementById('prix_total').value = total;
+                                }
                               }
                             }
                           </script>
